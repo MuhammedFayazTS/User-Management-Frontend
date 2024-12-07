@@ -35,10 +35,11 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Logo from "@/components/logo";
 import { useTheme } from "@/context/theme-provider";
+import { useAuthContext } from "@/context/auth-provider";
 
 const AppSidebar = () => {
   const { theme, setTheme } = useTheme();
-  const isLoading = false, user = {name:'Admin',email:'admin@example.com'} //replace with fetch query
+  const { isLoading, user } = useAuthContext();
 
   const { open } = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
