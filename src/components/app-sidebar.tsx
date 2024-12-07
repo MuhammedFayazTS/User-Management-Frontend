@@ -38,7 +38,7 @@ import { useTheme } from "@/context/theme-provider";
 
 const AppSidebar = () => {
   const { theme, setTheme } = useTheme();
-  const isLoading = false, user = {name:'admin',email:'admin@example.com'} //replace with fetch query
+  const isLoading = false, user = {name:'Admin',email:'admin@example.com'} //replace with fetch query
 
   const { open } = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
