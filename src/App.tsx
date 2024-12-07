@@ -1,11 +1,11 @@
 import { BrowserRouter } from 'react-router'
-import { Button } from './components/ui/button'
+import AppRoutes from './routes'
 
 function App() {
 
   return (
     <BrowserRouter>
-      <Button>Click me</Button>
+       <AppRoutes />
     </BrowserRouter>
   )
 }
