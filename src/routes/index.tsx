@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router'
 import Register from '@/pages/auth/register/Index'
 import Login from '@/pages/auth/login/Index'
 import ConfirmAccount from '@/pages/auth/confirm-account/Index'
+import ForgotPassword from '@/pages/auth/forgot-password/Index'
 
 const AppRoutes = () => {
     return (
@@ -13,6 +14,7 @@ const AppRoutes = () => {
                 <Route path="" element={<Login />} />
                 <Route path="signup" element={<Register />} />
                 <Route path="confirm-account" element={<ConfirmAccount />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
             </Route>
 
             {/* private routes */}
