@@ -1,6 +1,7 @@
 import { AppLayout } from '@/layout/AppLayout'
 import BaseLayout from '@/layout/BaseLayout'
 import { Route, Routes } from 'react-router'
+import Register from '@/pages/auth/register/Index'
 
 const AppRoutes = () => {
     return (
@@ -8,6 +9,7 @@ const AppRoutes = () => {
             {/* public routes */}
             <Route element={<BaseLayout />}>
                 <Route path="" element={<></>} />
+                <Route path="register" element={<Register />} />
             </Route>
 
             {/* private routes */}
