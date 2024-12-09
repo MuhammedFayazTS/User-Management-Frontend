@@ -1,27 +1,37 @@
-import { ComputerIcon, Trash2 } from "lucide-react";
+import {  Loader, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { parseSession } from "@/utils/parse-sessions";
 
 const SessionItem = (props: {
-  id: string;
-  deviceName: string;
+  expiresAt: string;
   date: string;
   isCurrent?: boolean;
+  loading?: boolean;
+  userAgent: string;
+  onRemove?: () => void;
 }) => {
-  const { deviceName, date, isCurrent = false } = props;
+  const { userAgent, loading, date, isCurrent = false, onRemove } = props;
+  const { os, browser, timeAgo, icon: Icon } = parseSession(userAgent, date);
+
+  const handleRemove = () => {
+    if (onRemove) {
+      onRemove();
+    }
+  };
   return (
     <div className="w-full flex items-center ">
       <div
         className="shrink-0 mr-[16px] flex items-center justify-center
        w-[48px] h-[48px] rounded-full border dorder-[#eee] dark:border-[rgb(42,45,48)]"
       >
-        <ComputerIcon />
+        <Icon />
       </div>
       <div className="flex-1 flex items-center justify-between">
         <div className="flex-1">
-          <h5 className="text-sm font-medium leading-1">{deviceName}</h5>
+          <h5 className="text-sm font-medium leading-1">{os} / {browser}</h5>
           <div className="flex items-center">
             <span className="mr-[16px] text-[13px] text-muted-foreground font-normal">
-              {date}
+              {timeAgo || "date"}
             </span>
             {isCurrent && (
               <div
@@ -35,8 +45,17 @@ const SessionItem = (props: {
         </div>
 
         {!isCurrent && (
-          <Button variant="ghost" size="icon">
-            <Trash2 size="29px" />
+          <Button
+            disabled={loading}
+            variant="ghost"
+            size="icon"
+            onClick={handleRemove}
+          >
+            {loading ? (
+              <Loader className="w-4 h-4 animate-spin" />
+            ) : (
+              <Trash2 size="29px" />
+            )}
           </Button>
         )}
       </div>
