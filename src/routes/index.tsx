@@ -8,6 +8,8 @@ import ForgotPassword from '@/pages/auth/forgot-password/Index'
 import ResetPassword from '@/pages/auth/reset-password/Index'
 import PublicRoute from './public.route'
 import AuthRoute from './auth.route'
+import Home from '@/pages/home/Index'
+import Settings from '@/pages/Settings/Index'
 
 const AppRoutes = () => {
     return (
@@ -26,7 +28,8 @@ const AppRoutes = () => {
             {/* private routes */}
             <Route element={<AuthRoute />}>
                 <Route element={<AppLayout />}>
-                    <Route path="home" element={<></>} />
+                    <Route path="home" element={<Home/>} />
+                    <Route path="settings" element={<Settings/>} />
                 </Route>
             </Route>
         </Routes>

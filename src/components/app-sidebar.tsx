@@ -64,7 +64,7 @@ const AppSidebar = () => {
 
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Settings,
     },
   ];
