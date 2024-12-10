@@ -10,6 +10,7 @@ import PublicRoute from './public.route'
 import AuthRoute from './auth.route'
 import Home from '@/pages/home/Index'
 import Settings from '@/pages/Settings/Index'
+import Session from '@/pages/sessions/Index'
 
 const AppRoutes = () => {
     return (
@@ -30,6 +31,7 @@ const AppRoutes = () => {
                 <Route element={<AppLayout />}>
                     <Route path="home" element={<Home/>} />
                     <Route path="settings" element={<Settings/>} />
+                    <Route path="sessions" element={<Session/>} />
                 </Route>
             </Route>
         </Routes>

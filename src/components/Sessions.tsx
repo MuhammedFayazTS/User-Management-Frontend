@@ -1,19 +1,50 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import SessionItem from "./SessionItem";
-import { sessionsQueryFn } from "@/api/auth.service";
+import { sessionsQueryFn, sessionDelMutationFn } from "@/api/auth.service";
 import { Loader } from "lucide-react";
+import { useCallback } from "react";
+import { toast } from "@/hooks/use-toast";
+import { handleAxiosError } from "@/api/api-error";
 
 const Sessions = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["sessions"],
     queryFn: sessionsQueryFn,
     staleTime: Infinity,
+  });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: sessionDelMutationFn,
   });
 
   const sessions = data?.sessions || [];
   const currentSession = sessions?.find((session) => session.isCurrent);
   const othersSessions = sessions?.filter(
     (session) => session.isCurrent !== true
+  );
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      mutate(id, {
+        onSuccess: () => {
+          refetch();
+          toast({
+            title: "Success",
+            description: "Session removed successfully",
+          });
+        },
+        onError: (error) => {
+          const { statusCode, message } = handleAxiosError(error);
+          console.log({ statusCode, error });
+          toast({
+            title: "Error",
+            description: message,
+            variant: "destructive",
+          });
+        },
+      });
+    },
+    [mutate, refetch]
   );
 
   return (
@@ -39,28 +70,30 @@ const Sessions = () => {
             </p>
           </div>
           <div className="w-full">
-          {currentSession && (
-                <div className="w-full py-2 border-b pb-5">
-                  <SessionItem
-                    userAgent={currentSession.userAgent}
-                    date={currentSession.createdAt}
-                    expiresAt={currentSession.expiresAt}
-                    isCurrent={currentSession.isCurrent}
-                  />
-                </div>
-              )}
+            {currentSession && (
+              <div className="w-full py-2 border-b pb-5">
+                <SessionItem
+                  userAgent={currentSession.userAgent}
+                  date={currentSession.createdAt}
+                  expiresAt={currentSession.expiresAt}
+                  isCurrent={currentSession.isCurrent}
+                />
+              </div>
+            )}
             <div className="mt-4">
               <h5 className="text-base font-semibold">Other sessions</h5>
               <ul className="mt-4">
-              {othersSessions?.map((session) => (
-                    <li key={session._id}>
-                      <SessionItem
-                        userAgent={session.userAgent}
-                        expiresAt={session.expiresAt}
-                        date={session.createdAt}
-                      />
-                    </li>
-                  ))}
+                {othersSessions?.map((session) => (
+                  <li key={session.id}>
+                    <SessionItem
+                      loading={isPending}
+                      userAgent={session.userAgent}
+                      expiresAt={session.expiresAt}
+                      date={session.createdAt}
+                      onRemove={() => handleDelete(session.id)}
+                    />
+                  </li>
+                ))}
               </ul>
             </div>
           </div>

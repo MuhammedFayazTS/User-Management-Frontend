@@ -17,7 +17,7 @@ type forgotPasswordType = { email: string };
 type resetPasswordType = { verificationCode: string; password: string };
 
 type SessionType = {
-  _id: string;
+  id: string;
   userId: string;
   userAgent: string;
   createdAt: string;
@@ -53,3 +53,6 @@ export const sessionsQueryFn = async () => {
   const response = await API.get<SessionResponseType>(`/session/all`);
   return response.data;
 };
+
+export const sessionDelMutationFn = async (id: string) =>
+  await API.delete(`/session/${id}`);
