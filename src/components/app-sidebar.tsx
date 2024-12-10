@@ -36,6 +36,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import Logo from "@/components/logo";
 import { useTheme } from "@/context/theme-provider";
 import { useAuthContext } from "@/context/auth-provider";
+import LogoutDialog from "./LogoutDialog";
 
 const AppSidebar = () => {
   const { theme, setTheme } = useTheme();
@@ -43,7 +44,6 @@ const AppSidebar = () => {
 
   const { open } = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
-  console.log("isOpen:", isOpen) //use isOpen for dialog for logout
 
   const items = [
     {
@@ -162,6 +162,7 @@ const AppSidebar = () => {
         <SidebarRail />
       </Sidebar>
 
+      <LogoutDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 };

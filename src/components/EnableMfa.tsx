@@ -70,7 +70,7 @@ const EnableMfa = () => {
 
         <Dialog>
           <DialogTrigger asChild>
-            <Button className="h-[35px] text-black">Enable MFA</Button>
+            <Button className="h-[35px] dark:text-black">Enable MFA</Button>
           </DialogTrigger>
           <DialogContent className="!gap-0">
             <DialogHeader>
