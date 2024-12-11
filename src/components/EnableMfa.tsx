@@ -32,6 +32,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { mfaSetupQueryFn, verifyMFAMutationFn } from "@/api/auth.service";
 import { handleAxiosError } from "@/api/api-error";
 import { toast } from "@/hooks/use-toast";
+import RevokeMfa from "./RevokeMfa";
 
 type mfaType = {
   message: string;
@@ -126,9 +127,7 @@ const EnableMfa = () => {
           Protect your account by adding an extra layer of security.
         </p>
         {user?.userPreference?.enable2FA ? (
-          <Button className="h-[35px] text-[#c40006d3] bg-red-100 shadow-none mr-1">
-            Revoke Access
-          </Button>
+          <RevokeMfa />
         ) : (
           <Dialog modal open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
