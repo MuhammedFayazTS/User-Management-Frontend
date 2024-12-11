@@ -33,6 +33,8 @@ type mfaType = {
 
 type verifyMFAType = { code: string; secretKey: string };
 
+type mfaLoginType = { code: string; email: string };
+
 type SessionResponseType = {
   message: string;
   sessions: SessionType[];
@@ -66,6 +68,9 @@ export const mfaSetupQueryFn = async () => {
   const response = await API.get<mfaType>(`/mfa/setup`);
   return response.data;
 };
+
+export const verifyMFALoginMutationFn = async (data: mfaLoginType) =>
+  await API.post(`/mfa/verify-login`, data);
 
 export const revokeMFAMutationFn = async () => await API.put(`/mfa/revoke`, {});
 

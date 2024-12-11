@@ -11,6 +11,7 @@ import AuthRoute from './auth.route'
 import Home from '@/pages/home/Index'
 import Settings from '@/pages/Settings/Index'
 import Session from '@/pages/sessions/Index'
+import VerifyMfa from '@/pages/auth/verify-mfa/Index'
 
 const AppRoutes = () => {
     return (
@@ -23,6 +24,7 @@ const AppRoutes = () => {
                     <Route path="confirm-account" element={<ConfirmAccount />} />
                     <Route path="forgot-password" element={<ForgotPassword />} />
                     <Route path="reset-password" element={<ResetPassword />} />
+                    <Route path="verify-mfa" element={<VerifyMfa />} />
                 </Route>
             </Route>
 
