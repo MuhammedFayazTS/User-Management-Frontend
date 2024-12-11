@@ -25,6 +25,14 @@ type SessionType = {
   isCurrent: boolean;
 };
 
+type mfaType = {
+  message: string;
+  secret: string;
+  qrImageUrl: string;
+};
+
+type verifyMFAType = { code: string; secretKey: string };
+
 type SessionResponseType = {
   message: string;
   sessions: SessionType[];
@@ -53,6 +61,14 @@ export const sessionsQueryFn = async () => {
   const response = await API.get<SessionResponseType>(`/session/all`);
   return response.data;
 };
+
+export const mfaSetupQueryFn = async () => {
+  const response = await API.get<mfaType>(`/mfa/setup`);
+  return response.data;
+};
+
+export const verifyMFAMutationFn = async (data: verifyMFAType) =>
+  await API.post(`/mfa/verify`, data);
 
 export const sessionDelMutationFn = async (id: string) =>
   await API.delete(`/session/${id}`);

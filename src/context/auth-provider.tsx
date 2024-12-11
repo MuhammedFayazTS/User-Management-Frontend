@@ -8,7 +8,7 @@ type UserType = {
   isEmailVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
-  userPreferences: {
+  userPreference: {
     enable2FA: boolean;
   };
 };
