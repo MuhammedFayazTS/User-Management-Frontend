@@ -5,14 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import {
   Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { registerMutationFn } from "@/api/auth.service";
@@ -21,6 +15,7 @@ import { Link } from "react-router";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";
 import GoogleLogin from "@/components/GoogleLogin"
+import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function SignUp() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -49,8 +44,8 @@ export default function SignUp() {
         setIsSubmitted(true);
       },
       onError: (error) => {
-          const { statusCode, message } = handleAxiosError(error);
-          console.log({statusCode,error});
+        const { statusCode, message } = handleAxiosError(error);
+        console.log({ statusCode, error });
         toast({
           title: "Error",
           description: message,
@@ -79,100 +74,49 @@ export default function SignUp() {
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="mb-4">
-                  <FormField
+                <DefaultTextInput
                     control={form.control}
                     name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                          First Name
-                        </FormLabel>
-                        <FormControl>
-                          <Input placeholder="John" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    label="First Name"
+                    placeholder="John"
+                    type="text"
                   />
                 </div>
                 <div className="mb-4">
-                  <FormField
+                  <DefaultTextInput
                     control={form.control}
                     name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                          Last Name
-                        </FormLabel>
-                        <FormControl>
-                          <Input placeholder="Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    label="Last Name"
+                    placeholder="Doe"
+                    type="text"
                   />
                 </div>
                 <div className="mb-4">
-                  <FormField
+                  <DefaultTextInput
                     control={form.control}
                     name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                          Email
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="johndoe@mail.com"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    label="Email"
+                    placeholder="johndoe@mail.com"
+                    type="email"
                   />
                 </div>
                 <div className="mb-4">
-                  <FormField
+                  <DefaultTextInput
                     control={form.control}
                     name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                          Password
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="••••••••••••"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
+                    label="Password"
+                    placeholder="••••••••••••"
+                    type="password"
                   />
                 </div>
                 <div className="mb-4">
-                  <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                          Confirm Password
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="••••••••••••"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                    <DefaultTextInput
+                      control={form.control}
+                      name="confirmPassword"
+                      label="Confirm Password"
+                      placeholder="••••••••••••"
+                      type="password"
+                    />
                 </div>
                 <Button
                   disabled={isPending}

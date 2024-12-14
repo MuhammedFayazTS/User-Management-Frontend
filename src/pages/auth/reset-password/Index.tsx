@@ -18,6 +18,7 @@ import { resetPasswordMutationFn } from "@/api/auth.service";
 import { ArrowLeft, Frown, Loader } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";
+import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function ResetPassword() {
     const navigate = useNavigate();
@@ -125,27 +126,23 @@ export default function ResetPassword() {
                                             </FormItem>
                                         )}
                                     />
+                                    <DefaultTextInput
+                                        control={form.control}
+                                        name="password"
+                                        label="New password"
+                                        placeholder="Enter your password"
+                                        autoComplete="off"
+                                        type="password"
+                                    />
                                 </div>
                                 <div className="mb-0">
-                                    <FormField
+                                    <DefaultTextInput
                                         control={form.control}
                                         name="confirmPassword"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                                                    Confirm new password
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        type="password"
-                                                        autoComplete="off"
-                                                        placeholder="Enter your password again"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
+                                        label="Confirm new password"
+                                        autoComplete="off"
+                                        placeholder="Enter your password again"
+                                        type="password"
                                     />
                                 </div>
 
