@@ -19,6 +19,7 @@ import { toast } from "@/hooks/use-toast";
 import { loginMutationFn } from "@/api/auth.service";
 import { loginSchema } from "./schema";
 import { handleAxiosError } from "@/api/api-error";
+import GoogleLogin from "@/components/googleLogin"
 
 export default function Login() {
     const navigate = useNavigate();
@@ -150,9 +151,7 @@ export default function Login() {
                         </div>
                     </form>
                 </Form>
-                <Button variant="outline" type="button" className="w-full h-[40px]">
-                    Email magic link
-                </Button>
+                <GoogleLogin />
                 <p className="text-xs dark:text-slate- font-normal mt-7">
                     By signing in, you agree to our{" "}
                     <a className="text-primary hover:underline" href="#">

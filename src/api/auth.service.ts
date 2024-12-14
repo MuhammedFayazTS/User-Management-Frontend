@@ -1,7 +1,8 @@
 import API from "./axios-cient";
 
 type registerType = {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
