@@ -19,7 +19,7 @@ import { toast } from "@/hooks/use-toast";
 import { loginMutationFn } from "@/api/auth.service";
 import { loginSchema } from "./schema";
 import { handleAxiosError } from "@/api/api-error";
-import GoogleLogin from "@/components/googleLogin"
+import GoogleLogin from "@/components/GoogleLogin"
 
 export default function Login() {
     const navigate = useNavigate();
@@ -86,7 +86,7 @@ export default function Login() {
                                             Email
                                         </FormLabel>
                                         <FormControl>
-                                            <Input placeholder="youremailid@mail.com" {...field} />
+                                            <Input placeholder="johndoe@mail.com" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

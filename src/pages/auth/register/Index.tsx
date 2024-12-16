@@ -20,7 +20,7 @@ import { registerSchema } from "./schema";
 import { Link } from "react-router";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";
-import GoogleLogin from "@/components/googleLogin"
+import GoogleLogin from "@/components/GoogleLogin"
 
 export default function SignUp() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -88,7 +88,7 @@ export default function SignUp() {
                           First Name
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="your name" {...field} />
+                          <Input placeholder="John" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -105,7 +105,7 @@ export default function SignUp() {
                           Last Name
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="your name" {...field} />
+                          <Input placeholder="Doe" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -123,7 +123,7 @@ export default function SignUp() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="youremailid@mail.com"
+                            placeholder="johndoe@mail.com"
                             {...field}
                           />
                         </FormControl>
