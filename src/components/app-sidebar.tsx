@@ -32,7 +32,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Logo from "@/components/logo";
 import { useTheme } from "@/context/theme-provider";
 import { useAuthContext } from "@/context/auth-provider";
@@ -118,14 +118,15 @@ const AppSidebar = () => {
                       className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                     >
                       <Avatar className="h-8 w-8 rounded-full">
+                      <AvatarImage loading="lazy" src={user?.image} />
                         <AvatarFallback className="rounded-full border border-gray-500">
-                          {user?.name?.split(" ")?.[0]?.charAt(0)}
-                          {user?.name?.split(" ")?.[1]?.charAt(0)}
+                          {user?.firstName?.split(" ")?.[0]?.charAt(0)}
+                          {user?.lastName?.split(" ")?.[0]?.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <div className="grid flex-1 text-left text-sm leading-tight">
                         <span className="truncate font-semibold">
-                          {user?.name}
+                          {user?.firstName}{" "}{user?.lastName}
                         </span>
                         <span className="truncate text-xs">{user?.email}</span>
                       </div>

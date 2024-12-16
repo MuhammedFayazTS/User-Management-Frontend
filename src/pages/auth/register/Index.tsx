@@ -20,6 +20,7 @@ import { registerSchema } from "./schema";
 import { Link } from "react-router";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";
+import GoogleLogin from "@/components/GoogleLogin"
 
 export default function SignUp() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -34,7 +35,8 @@ export default function SignUp() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -79,14 +81,31 @@ export default function SignUp() {
                 <div className="mb-4">
                   <FormField
                     control={form.control}
-                    name="name"
+                    name="firstName"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                          Name
+                          First Name
                         </FormLabel>
                         <FormControl>
-                          <Input placeholder="your name" {...field} />
+                          <Input placeholder="John" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="mb-4">
+                  <FormField
+                    control={form.control}
+                    name="lastName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
+                          Last Name
+                        </FormLabel>
+                        <FormControl>
+                          <Input placeholder="Doe" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -104,7 +123,7 @@ export default function SignUp() {
                         </FormLabel>
                         <FormControl>
                           <Input
-                            placeholder="youremailid@mail.com"
+                            placeholder="johndoe@mail.com"
                             {...field}
                           />
                         </FormControl>
@@ -184,9 +203,7 @@ export default function SignUp() {
                 </div>
               </form>
             </Form>
-            <Button variant="outline" className="w-full h-[40px]">
-              Email magic link
-            </Button>
+            <GoogleLogin />
             <p className="text-xs font-normal mt-4">
               By signing up, you agree to our{" "}
               <a className="text-primary hover:underline" href="#">
