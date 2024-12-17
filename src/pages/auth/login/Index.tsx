@@ -6,13 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
     Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { toast } from "@/hooks/use-toast";
@@ -20,6 +14,7 @@ import { loginMutationFn } from "@/api/auth.service";
 import { loginSchema } from "./schema";
 import { handleAxiosError } from "@/api/api-error";
 import GoogleLogin from "@/components/GoogleLogin"
+import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function Login() {
     const navigate = useNavigate();
@@ -77,41 +72,21 @@ export default function Login() {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
                         <div className="mb-4">
-                            <FormField
+                            <DefaultTextInput
                                 control={form.control}
                                 name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                                            Email
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input placeholder="johndoe@mail.com" {...field} />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                                label="Email"
+                                placeholder="johndoe@mail.com"
+                                type="email"
                             />
                         </div>
                         <div className="mb-4">
-                            <FormField
+                            <DefaultTextInput
                                 control={form.control}
                                 name="password"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                                            Password
-                                        </FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="password"
-                                                placeholder="••••••••••••"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
+                                label="Password"
+                                placeholder="••••••••••••"
+                                type="password"
                             />
                         </div>
                         <div className="mb-4 flex w-full items-center justify-end">

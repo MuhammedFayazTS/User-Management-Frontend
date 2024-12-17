@@ -5,13 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
     Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { forgotPasswordMutationFn } from "@/api/auth.service";
@@ -20,6 +14,7 @@ import { toast } from "@/hooks/use-toast";
 import { Link, useSearchParams } from "react-router-dom";
 import { forgotPasswordSchema } from "./schema";
 import { handleAxiosError } from "@/api/api-error";
+import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function ForgotPassword() {
     const [param] = useSearchParams();
@@ -79,23 +74,12 @@ export default function ForgotPassword() {
                             onSubmit={form.handleSubmit(onSubmit)}
                         >
                             <div className="mb-0">
-                                <FormField
+                                <DefaultTextInput
                                     control={form.control}
                                     name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                                                Email
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="youremail@mail.com"
-                                                    {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                    label="Email"
+                                    placeholder="youremailid@mail.com"
+                                    type="email"
                                 />
                             </div>
                             <Button
