@@ -1,10 +1,10 @@
 import {
-  BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
+  MoonStarIcon,
   Sparkles,
+  SunIcon,
 } from "lucide-react"
 
 import {
@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useState } from "react"
 import LogoutDialog from "../LogoutDialog"
+import { useTheme } from "@/context/theme-provider"
 
 export function NavUser({
   user,
@@ -42,6 +43,7 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar()
   const [isOpen, setIsOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
 
   return (
     <>
@@ -97,13 +99,13 @@ export function NavUser({
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <BadgeCheck />
-                  Account
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard />
-                  Billing
+                <DropdownMenuItem
+                  onClick={() =>
+                    setTheme(theme === "light" ? "dark" : "light")
+                  }
+                >
+                  {theme === "dark" ? <MoonStarIcon /> : <SunIcon />}
+                  Toggle theme
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Bell />
@@ -119,7 +121,7 @@ export function NavUser({
           </DropdownMenu>
         </SidebarMenuItem>
       </SidebarMenu>
-      
+
       <LogoutDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   )

@@ -1,13 +1,6 @@
-import * as React from "react"
+import React, { useState } from "react"
 import {
-  AudioWaveform,
   Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  UserCog
 } from "lucide-react"
 
 import { NavMain } from "@/components/sidebar/nav-main"
@@ -24,88 +17,25 @@ import {
 } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/context/auth-provider"
 import { Skeleton } from "../ui/skeleton"
-import { SearchForm } from "./search-form"
-
-// This is sample data.
-const data = {
-  teams: [
-    {
-      name: "Nexus Flow",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "Account",
-      url: "#",
-      icon: UserCog,
-      items: [
-        {
-          title: "Sessions",
-          url: "/sessions"
-        },
-        {
-          title: "2FA",
-          url: "/mfa",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-}
+import { SearchForm } from "../search-form"
+import { NavSearchResults } from "./nav-search-results"
+import { searchNavMain } from "@/utils/sidebar-helper"
+import { data } from "@/constants/sidebar-items"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { isLoading, user } = useAuthContext();
+  const [searchedModules, setSearchedModules] = useState<{ title: string; url: string }[] | null>(null)
+
+  const onsubmitsearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const { searchQuery } = Object.fromEntries(formData.entries());
+
+    const searchResult = searchNavMain(data, `${searchQuery}`)
+    setSearchedModules(searchResult)
+  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
 
@@ -128,12 +58,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
         {/* uncomment when team switcher is needed */}
         {/* <TeamSwitcher teams={data.teams} /> */}
-        
+
       </SidebarHeader>
 
-      <SearchForm />
-      
+      <SearchForm onSubmit={onsubmitsearch} />
+
       <SidebarContent>
+        {
+          searchedModules && (
+            <NavSearchResults items={searchedModules} />
+          )
+        }
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
