@@ -10,8 +10,9 @@ import PublicRoute from './public.route'
 import AuthRoute from './auth.route'
 import Home from '@/pages/home/Index'
 import Settings from '@/pages/Settings/Index'
-import Session from '@/pages/sessions/Index'
+import Session from '@/pages/account/sessions/Index'
 import VerifyMfa from '@/pages/auth/verify-mfa/Index'
+import MFA from '@/pages/account/mfa/Index'
 
 const AppRoutes = () => {
     return (
@@ -34,6 +35,7 @@ const AppRoutes = () => {
                     <Route path="home" element={<Home/>} />
                     <Route path="settings" element={<Settings/>} />
                     <Route path="sessions" element={<Session/>} />
+                    <Route path="mfa" element={<MFA/>} />
                 </Route>
             </Route>
         </Routes>
