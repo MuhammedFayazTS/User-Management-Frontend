@@ -6,7 +6,7 @@ interface ILayout {
     stack?: boolean;
     justifyContent?: 'start' | 'center' | 'space-between' | 'space-around' | 'space-evenly';
     gap?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 15 | 20;
-    width?: number;
+    width?: number | "full";
     className?: string;
     height?: number;
     background?: string;

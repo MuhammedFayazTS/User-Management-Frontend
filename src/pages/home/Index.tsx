@@ -1,13 +1,32 @@
+import Layout from "@/components/core/Layout";
+import useBreadcrumbs from "@/hooks/use-breadcrumbs";
+import Page from "@/layout/PageLayout";
 
 const Home = () => {
+
+  useBreadcrumbs({ title:'Home' });
+
   return (
-    <div>
-      <div className="flex max-w-3xl flex-col gap-2 mx-auto w-full md:max-w-5xl px-6 py-8">
-        <h1 className="text-[28px] leading-[34px] tracking-[-0.416px] text-[#000509e3] dark:text-inherit font-extrabold">
-          Welcome to AuthMatic
-        </h1>
-      </div>
-    </div>
+      <Page title="Welcome to Nexus Flow">
+        <Layout stack gap={4}  className="flex-1">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+        </Layout>
+      </Page>
   );
 };
 
