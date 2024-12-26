@@ -3,6 +3,7 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar"
 import Header from "@/components/Header"
 import { Outlet } from "react-router"
 import { AuthProvider } from "@/context/auth-provider"
+import { HeaderProvider } from "@/context/header-provider"
 
 export const AppLayout = () => {
   return (
@@ -10,10 +11,12 @@ export const AppLayout = () => {
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <main className="w-full">
-            <Header />
-            <Outlet />
-          </main>
+          <HeaderProvider>
+            <main className="w-full">
+              <Header />
+              <Outlet />
+            </main>
+          </HeaderProvider>
         </SidebarInset>
       </SidebarProvider>
     </AuthProvider>
