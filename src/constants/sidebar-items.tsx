@@ -1,7 +1,18 @@
-import { Settings2, UserCog } from "lucide-react";
+import { Settings2, UserCog, UserSquare } from "lucide-react";
 
 export const data = {
   navMain: [
+    {
+      title: "Admin",
+      url: "#",
+      icon: UserSquare,
+      items: [
+        {
+          title: "Role",
+          url: "/admin/role",
+        },
+      ],
+    },
     {
       title: "Account",
       url: "#",

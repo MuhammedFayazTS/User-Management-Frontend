@@ -1,6 +1,7 @@
 import PageHeader from "@/components/PageHeader"
 import useBreadcrumbs from "@/hooks/use-breadcrumbs"
 import { LucideIcon } from "lucide-react"
+import { MouseEventHandler } from "react"
 
 export type PageType = 'create' | 'list' | 'edit'
 
@@ -10,11 +11,12 @@ interface IBreadcrumb {
 }
 
 export interface IAction {
-    title?: string
-    onClick: (event: Event) => void
+    title: string
+    onClick: MouseEventHandler<HTMLButtonElement>
     disabled?: boolean
     loading?: boolean
     Icon: LucideIcon
+    active?: boolean
 }
 
 interface IPage {

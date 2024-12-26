@@ -20,18 +20,18 @@ const Header = () => {
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Breadcrumb>
-            <BreadcrumbList>
+            <BreadcrumbList key={'breadcrumb'}>
               {
                 isLoading ?
                   (
-                    <BreadcrumbItem>
+                    <BreadcrumbItem key={'loading'}>
                       <BreadcrumbPage>
                         Loading...
                       </BreadcrumbPage>
                     </BreadcrumbItem>
                   ) :
-                  breadcrumbs?.map((breadcrumb) => (<>
-                    <BreadcrumbItem key={breadcrumb.title} className="hidden md:block">
+                  breadcrumbs?.map((breadcrumb, index) => (<>
+                    <BreadcrumbItem key={breadcrumb.title + index} className="hidden md:block">
                       <BreadcrumbLink href={breadcrumb.to ?? "#"}>
                         {breadcrumb.title}
                       </BreadcrumbLink>
