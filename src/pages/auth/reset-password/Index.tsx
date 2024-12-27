@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
-import { resetPasswordMutationFn } from "@/api/auth.service";
+import { resetPasswordMutationFn } from "@/api/auth";
 import { ArrowLeft, Frown, Loader } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";

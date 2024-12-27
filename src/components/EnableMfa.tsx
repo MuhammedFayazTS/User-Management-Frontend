@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/auth-provider";
 import { Skeleton } from "./ui/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { mfaSetupQueryFn, verifyMFAMutationFn } from "@/api/auth.service";
+import { mfaSetupQueryFn, verifyMFAMutationFn } from "@/api/auth";
 import { handleAxiosError } from "@/api/api-error";
 import { toast } from "@/hooks/use-toast";
 import RevokeMfa from "./RevokeMfa";

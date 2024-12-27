@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Loader } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { revokeMFAMutationFn } from "@/api/auth.service";
+import { revokeMFAMutationFn } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";

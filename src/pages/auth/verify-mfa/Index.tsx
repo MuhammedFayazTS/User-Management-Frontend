@@ -23,7 +23,7 @@ import { toast } from "@/hooks/use-toast";
 
 import Logo from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { verifyMFALoginMutationFn } from "@/api/auth.service";
+import { verifyMFALoginMutationFn } from "@/api/auth";
 
 const VerifyMfa = () => {
     const navigate = useNavigate();

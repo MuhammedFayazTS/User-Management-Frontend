@@ -3,7 +3,7 @@ import { Loader } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { toast } from "@/hooks/use-toast";
-import { verifyEmailMutationFn } from "@/api/auth.service";
+import { verifyEmailMutationFn } from "@/api/auth";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { handleAxiosError } from "@/api/api-error";
 

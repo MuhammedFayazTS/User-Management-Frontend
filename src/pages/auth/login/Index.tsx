@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { toast } from "@/hooks/use-toast";
-import { loginMutationFn } from "@/api/auth.service";
+import { loginMutationFn } from "@/api/auth";
 import { loginSchema } from "./schema";
 import { handleAxiosError } from "@/api/api-error";
 import GoogleLogin from "@/components/GoogleLogin"
