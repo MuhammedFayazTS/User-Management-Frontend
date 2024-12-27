@@ -14,7 +14,7 @@ import { registerSchema } from "./schema";
 import { Link } from "react-router";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";
-import GoogleLogin from "@/components/GoogleLogin"
+import GoogleLogin from "@/components/buttons/GoogleLogin"
 import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function SignUp() {

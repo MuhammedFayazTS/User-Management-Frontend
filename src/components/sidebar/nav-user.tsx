@@ -28,7 +28,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { useState } from "react"
-import LogoutDialog from "../LogoutDialog"
+import LogoutDialog from "../dialog/LogoutDialog"
 import { useTheme } from "@/context/theme-provider"
 
 export function NavUser({

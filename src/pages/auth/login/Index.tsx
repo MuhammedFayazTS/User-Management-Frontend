@@ -13,7 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { loginMutationFn } from "@/api/auth";
 import { loginSchema } from "./schema";
 import { handleAxiosError } from "@/api/api-error";
-import GoogleLogin from "@/components/GoogleLogin"
+import GoogleLogin from "@/components/buttons/GoogleLogin"
 import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function Login() {

@@ -32,7 +32,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { mfaSetupQueryFn, verifyMFAMutationFn } from "@/api/auth";
 import { handleAxiosError } from "@/api/api-error";
 import { toast } from "@/hooks/use-toast";
-import RevokeMfa from "./RevokeMfa";
+import RevokeMfa from "./buttons/RevokeMfa";
 
 type mfaType = {
   message: string;
