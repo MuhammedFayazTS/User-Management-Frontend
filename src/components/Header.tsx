@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { useHeaderContext } from "@/context/header-provider";
 import { Separator } from "./ui/separator";
+import { Loader2 } from "lucide-react";
 
 const Header = () => {
   const { breadcrumbs, isLoading } = useHeaderContext()
@@ -26,7 +27,7 @@ const Header = () => {
                   (
                     <BreadcrumbItem key={'loading'}>
                       <BreadcrumbPage>
-                        Loading...
+                        <Loader2 className="animate-spin" />
                       </BreadcrumbPage>
                     </BreadcrumbItem>
                   ) :
