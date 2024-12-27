@@ -1,28 +1,24 @@
 import { UseFormReturn, FieldValues, Path } from "react-hook-form";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
-type InputType = "text" | "email" | "password" | "number";
-
-interface IDefaultTextInputProps<TFormValues extends FieldValues> {
+interface IDefaultTextAreaProps<TFormValues extends FieldValues> {
     name: Path<TFormValues>;
     control: UseFormReturn<TFormValues>["control"];
     label?: string;
-    type?: InputType;
     placeholder?: string;
     autoComplete?: 'off' | 'on',
     width?: number
 }
 
-const DefaultTextInput = <TFormValues extends FieldValues>({
+const DefaultTextArea = <TFormValues extends FieldValues>({
     control,
     name,
     label,
     placeholder,
-    type = "text",
     autoComplete,
     width
-}: IDefaultTextInputProps<TFormValues>) => {
+}: IDefaultTextAreaProps<TFormValues>) => {
     return (
         <FormField
             control={control}
@@ -31,7 +27,7 @@ const DefaultTextInput = <TFormValues extends FieldValues>({
                 <FormItem style={{ width: width || '100%' }}>
                     <FormLabel className="dark:text-[#f1f7feb5] text-sm">{label}</FormLabel>
                     <FormControl>
-                        <Input placeholder={placeholder} type={type} autoComplete={autoComplete} {...field} />
+                        <Textarea placeholder={placeholder} autoComplete={autoComplete} {...field} />
                     </FormControl>
                     <FormMessage />
                 </FormItem>
@@ -40,4 +36,4 @@ const DefaultTextInput = <TFormValues extends FieldValues>({
     );
 };
 
-export default DefaultTextInput;
+export default DefaultTextArea;
