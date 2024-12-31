@@ -1,44 +1,78 @@
-import { DefaultTable } from "@/components/core/DefaultTable"
-import { ColumnDef } from "@tanstack/react-table"
+import React from "react";
+import { DataTableToolbar } from "@/components/core/table/DataTableToolbar";
+import { DefaultTable } from "@/components/core/table/DefaultTable";
+import { DefaultTableSkeleton } from "@/components/core/table/DefaultTableSkelton";
+import { DataTableColumnHeader } from "@/components/core/table/DataTableColumnHeader";
+import { useDataTable } from "@/hooks/use-data-table";
+import type { ColumnDef } from "@tanstack/react-table";
+import { DataTableFilterField } from "@/types/common";
 
-export type Payment = {
-    id: string
-    amount: number
-    status: "pending" | "processing" | "success" | "failed"
-    email: string
-}
+// Sample data
+const data = [
+  { id: 1, name: "John Doe", age: 28 },
+  { id: 2, name: "Jane Smith", age: 32 },
+  // More data...
+];
 
-const dummyData = [
-    {
-        id: "728ed52f",
-        amount: 100,
-        status: "pending",
-        email: "m@example.com",
-    },
-]
+// Column definitions with DataTableColumnHeader
+const columns: ColumnDef<typeof data[0]>[] = [
+  {
+    accessorKey: "id",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="ID" />
+    ),
+  },
+  {
+    accessorKey: "name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Name" />
+    ),
+  },
+  {
+    accessorKey: "age",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Age" />
+    ),
+  },
+];
 
-const columns: ColumnDef<Payment>[] = [
-    {
-        accessorKey: "status",
-        header: "Status",
-    },
-    {
-        accessorKey: "email",
-        header: "Email",
-    },
-    {
-        accessorKey: "amount",
-        header: "Amount",
-    },
-]
+// Filter fields
+const filterFields: DataTableFilterField<typeof data[0]>[] = [
+  { value: "name", placeholder: "Search by name", label: "Name" },
+  { value: "age", placeholder: "Search by age", label: "Age" },
+];
 
 const RoleList = () => {
+  const isLoading = false;
 
-    return (
-        <div className="container mx-auto py-10">
-            <DefaultTable columns={columns} data={dummyData} />
-        </div>
-    )
-}
+  // Hook usage
+  const { table } = useDataTable({
+    data,
+    columns,
+    pageCount: Math.ceil(data.length / 10),
+    filterFields,
+    enableAdvancedFilter: false,
+    state: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+      columnPinning: { right: ["actions"] },
+    },
+  });
 
-export default RoleList
+  return isLoading ? (
+    <DefaultTableSkeleton columnCount={columns.length} />
+  ) : (
+    <div className="container mx-auto py-10">
+      <DataTableToolbar table={table} filterFields={filterFields} />
+      <DefaultTable
+        table={table}
+        totalRows={data.length}
+        className="custom-table-class"
+      />
+    </div>
+  );
+};
+
+export default RoleList;
