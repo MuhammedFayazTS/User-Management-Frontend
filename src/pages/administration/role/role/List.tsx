@@ -1,4 +1,3 @@
-import React from "react";
 import { DataTableToolbar } from "@/components/core/table/DataTableToolbar";
 import { DefaultTable } from "@/components/core/table/DefaultTable";
 import { DefaultTableSkeleton } from "@/components/core/table/DefaultTableSkelton";
@@ -6,6 +5,8 @@ import { DataTableColumnHeader } from "@/components/core/table/DataTableColumnHe
 import { useDataTable } from "@/hooks/use-data-table";
 import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableFilterField } from "@/types/common";
+import { Actions, IAction } from "@/components/core/table/Actions";
+import { getListActions } from "@/utils/actions";
 
 // Sample data
 const data = [
@@ -14,7 +15,15 @@ const data = [
   // More data...
 ];
 
-// Column definitions with DataTableColumnHeader
+const actions = (id: number) => {
+  console.log("id:",id)
+  const actions: IAction[] = getListActions({
+    onEdit: () => {},
+    onDelete: () => {},
+  })
+  return actions
+}
+
 const columns: ColumnDef<typeof data[0]>[] = [
   {
     accessorKey: "id",
@@ -34,6 +43,11 @@ const columns: ColumnDef<typeof data[0]>[] = [
       <DataTableColumnHeader column={column} title="Age" />
     ),
   },
+  {
+    accessorKey: "actions",
+    cell: ({ row }) => <Actions actions={actions(+row.id)} />,
+    size: 5
+  },
 ];
 
 // Filter fields
@@ -45,7 +59,6 @@ const filterFields: DataTableFilterField<typeof data[0]>[] = [
 const RoleList = () => {
   const isLoading = false;
 
-  // Hook usage
   const { table } = useDataTable({
     data,
     columns,
@@ -57,7 +70,6 @@ const RoleList = () => {
         pageIndex: 0,
         pageSize: 10,
       },
-      columnPinning: { right: ["actions"] },
     },
   });
 

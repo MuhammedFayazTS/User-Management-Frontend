@@ -1,5 +1,6 @@
-import { IAction, PageType } from "@/layout/PageLayout";
-import { List, PenBox } from "lucide-react";
+import { IAction } from "@/components/core/table/Actions";
+import { PageType, IAction as IPageAction } from "@/layout/PageLayout";
+import { Edit, Eye, List, PenBox, Trash } from "lucide-react";
 
 interface FormActions {
   onCreate?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -7,8 +8,14 @@ interface FormActions {
   view: PageType;
 }
 
+interface ListActions {
+  onEdit?: (event: React.MouseEvent<Element, MouseEvent>) => void;
+  onDelete?: (event: React.MouseEvent<Element, MouseEvent>) => void;
+  onView?: (event: React.MouseEvent<Element, MouseEvent>) => void;
+}
+
 export const getFormActions = ({ onCreate, onList, view }: FormActions) => {
-  const actions: IAction[] = [];
+  const actions: IPageAction[] = [];
 
   if (onCreate) {
     actions.push({
@@ -25,6 +32,38 @@ export const getFormActions = ({ onCreate, onList, view }: FormActions) => {
       Icon: List,
       active: view === "list",
       onClick: onList,
+    });
+  }
+
+  return actions;
+};
+
+export const getListActions = ({ onEdit, onDelete, onView }: ListActions) => {
+  const actions: IAction[] = [];
+  if (onView) {
+    actions.push({
+      title: "view",
+      Icon: Eye,
+      variant: "outline",
+      onClick: onView,
+    });
+  }
+
+  if (onEdit) {
+    actions.push({
+      title: "Edit",
+      Icon: Edit,
+      variant: "secondary",
+      onClick: onEdit,
+    });
+  }
+
+  if (onDelete) {
+    actions.push({
+      title: "Delete",
+      Icon: Trash,
+      variant: "destructive",
+      onClick: onDelete,
     });
   }
 
