@@ -7,29 +7,28 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableFilterField } from "@/types/common";
 import { Actions, IAction } from "@/components/core/table/Actions";
 import { getListActions } from "@/utils/actions";
-
-// Sample data
-const data = [
-  { id: 1, name: "John Doe", age: 28 },
-  { id: 2, name: "Jane Smith", age: 32 },
-  // More data...
-];
+import { useGetRoles } from "@/api/role";
+import { Role } from "@/types/role";
+import { useSearchParams } from "react-router";
+import PermissionBadge from "@/components/PermissionBadge";
 
 const actions = (id: number) => {
-  console.log("id:",id)
+  console.log("id:", id)
   const actions: IAction[] = getListActions({
-    onEdit: () => {},
-    onDelete: () => {},
+    onEdit: () => { },
+    onDelete: () => { },
   })
   return actions
 }
 
-const columns: ColumnDef<typeof data[0]>[] = [
+const columns: ColumnDef<Role>[] = [
   {
-    accessorKey: "id",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="ID" />
-    ),
+    accessorKey: "Sl No",
+    cell: ({ row }) => {
+      const rowIndex = row.index + 1;
+      return <div>{rowIndex}</div>;
+    },
+    enableSorting: false
   },
   {
     accessorKey: "name",
@@ -38,10 +37,14 @@ const columns: ColumnDef<typeof data[0]>[] = [
     ),
   },
   {
-    accessorKey: "age",
+    accessorKey: "description",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Age" />
+      <DataTableColumnHeader column={column} title="Description" />
     ),
+  },
+  {
+    accessorKey: "Permissions",
+    cell: ({ row }) => <PermissionBadge maxWidth={300} permissions={row.original.permissions} />
   },
   {
     accessorKey: "actions",
@@ -51,18 +54,24 @@ const columns: ColumnDef<typeof data[0]>[] = [
 ];
 
 // Filter fields
-const filterFields: DataTableFilterField<typeof data[0]>[] = [
+const filterFields: DataTableFilterField<Role>[] = [
   { value: "name", placeholder: "Search by name", label: "Name" },
-  { value: "age", placeholder: "Search by age", label: "Age" },
 ];
 
 const RoleList = () => {
-  const isLoading = false;
+  const [searchParams] = useSearchParams();
+  console.log('SearchParams:', searchParams.toString());
+  const search = searchParams.get("name")
+  const sort = searchParams.get("sort");
+  const page = searchParams.get("page");
+  const limit = searchParams.get("limit");
+
+  const { data, isLoading } = useGetRoles({ search, sort, page, limit });
 
   const { table } = useDataTable({
-    data,
+    data: data?.roles?.rows ?? [],
     columns,
-    pageCount: Math.ceil(data.length / 10),
+    pageCount: data?.pageCount ?? 1,
     filterFields,
     enableAdvancedFilter: false,
     state: {
@@ -80,7 +89,7 @@ const RoleList = () => {
       <DataTableToolbar table={table} filterFields={filterFields} />
       <DefaultTable
         table={table}
-        totalRows={data.length}
+        totalRows={data?.itemCount ?? 0}
         className="custom-table-class"
       />
     </div>

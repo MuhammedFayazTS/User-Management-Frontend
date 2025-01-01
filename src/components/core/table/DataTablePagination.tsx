@@ -2,7 +2,7 @@ import React from "react";
 import { Table } from "@tanstack/react-table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -65,7 +65,7 @@ export function DataTablePagination<TData>({
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <ChevronsLeft className="size-4" aria-hidden="true" />
+            <ChevronLeft className="size-4" aria-hidden="true" />
           </Button>
           <Button
             aria-label="Go to next page"
