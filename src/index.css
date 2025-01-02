@@ -28,6 +28,9 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --sb-track-color: #e8e8e8;
+    --sb-thumb-color: #c7c6c6;
+    --sb-size: 8px;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -54,6 +57,9 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --sb-track-color: #373737;
+    --sb-thumb-color: #151515;
+    --sb-size: 8px;
   }
 }
 
@@ -63,5 +69,25 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+body::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+body::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 4px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 4px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
   }
 }
