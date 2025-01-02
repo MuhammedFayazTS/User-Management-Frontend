@@ -1,18 +1,15 @@
 import { NewRole } from "@/types/role";
 import API from "./axios-cient";
-import { useQuery } from "@tanstack/react-query";
-
-type QueryOptions = {
-  sort?: string | null;
-  search?: string | null;
-  page?: string | null;
-  limit?: string | null;
-};
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { DefaultQueryParams } from "@/types/common";
 
 export const roleMutationFn = async (data: NewRole) =>
   await API.post(`/roles`, data);
 
-export const useGetRoles = (filters?: QueryOptions) => {
+export const roleDeleteFn = async (roleId: number) =>
+  await API.delete(`/roles/${roleId}`);
+
+export const useGetRoles = (filters?: DefaultQueryParams) => {
   const { search, sort, page = "1", limit = "10" } = filters || {};
   return useQuery({
     queryKey: ["roles", search, sort, page, limit],
@@ -31,18 +28,13 @@ export const useGetRoles = (filters?: QueryOptions) => {
   });
 };
 
-export const useGetModules = (filters?: QueryOptions) => {
-  const { search } = filters || {};
-  return useQuery({
-    queryKey: ["modules", search],
-    queryFn: () => {
-      const params = new URLSearchParams();
-      if (search) params.append("search", search);
+export const useDeleteRole = () => {
+  const queryClient = useQueryClient();
 
-      return API.get(`/modules?${params.toString()}`).then(
-        (response) => response.data
-      );
+  return useMutation({
+    mutationFn: roleDeleteFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["roles"] });
     },
-    enabled: !!filters,
   });
 };

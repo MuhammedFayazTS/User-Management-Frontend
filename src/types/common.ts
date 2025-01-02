@@ -21,3 +21,10 @@ export interface DataTableFilterOption<TData> {
   filterOperator?: string;
   isMulti?: boolean;
 }
+
+export interface DefaultQueryParams{
+  sort?: string | null;
+  search?: string | null;
+  page?: string | null;
+  limit?: string | null;
+};

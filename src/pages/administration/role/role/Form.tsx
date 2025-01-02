@@ -7,7 +7,7 @@ import { Form } from '@/components/ui/form';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from '@/hooks/use-toast';
 import { handleAxiosError } from '@/api/api-error';
-import { roleMutationFn, useGetModules } from '@/api/role';
+import { roleMutationFn } from '@/api/role';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Layout from '@/components/core/Layout';
 import DefaultTextArea from '@/components/core/DefaultTextArea';
@@ -18,6 +18,7 @@ import { Module } from '@/types/module';
 import { Loader } from 'lucide-react';
 import { Permission } from '@/types/permission';
 import { useState } from 'react';
+import { useGetModules } from '@/api/modules';
 
 const RoleForm = () => {
     const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>([])

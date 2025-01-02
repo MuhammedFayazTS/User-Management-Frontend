@@ -7,12 +7,17 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableFilterField } from "@/types/common";
 import { Actions, IAction } from "@/components/core/table/Actions";
 import { getListActions } from "@/utils/actions";
-import { useGetRoles } from "@/api/role";
+import { useDeleteRole, useGetRoles } from "@/api/role";
 import { Role } from "@/types/role";
 import { useSearchParams } from "react-router";
 import PermissionBadge from "@/components/PermissionBadge";
 import { useState } from "react";
 import ConfirmDialog, { IConfirmDialog } from "@/components/dialog/ConfirmDialog";
+import { useRoleStore } from "@/store/client";
+import { assertDefined } from "@/utils/common-helper";
+import { toast } from "@/hooks/use-toast";
+import { handleAxiosError } from "@/api/api-error";
+import { MessageCircleWarningIcon } from "lucide-react";
 
 // Filter fields
 const filterFields: DataTableFilterField<Role>[] = [
@@ -22,25 +27,46 @@ const filterFields: DataTableFilterField<Role>[] = [
 const RoleList = () => {
   const [confirmDialog, setConfirmDialog] = useState<IConfirmDialog>()
   const [searchParams] = useSearchParams();
+  const setDatabaseId = useRoleStore((state) => state.setDatabaseId);
+  const databaseId = useRoleStore((state) => state.databaseId);
+
   const search = searchParams.get("name")
   const sort = searchParams.get("sort");
   const page = searchParams.get("page");
   const limit = searchParams.get("limit");
 
   const { data, isLoading } = useGetRoles({ search, sort, page, limit });
+  const { mutate } = useDeleteRole();
 
-  const onClickDelete = (id:number) => {
-    console.log("id:", id)
-    // selectedId(id)
+  const onClickDelete = async (id:number) => {
+   await setDatabaseId(id); 
     setConfirmDialog({
       isOpen: true,
       title: "Delete Role",
+      TitleIcon:MessageCircleWarningIcon,
       onConfirm: onConfirmDelete,
     });
   };
   
   const onConfirmDelete = () => {
-    // console.log("id:", id)
+    assertDefined(databaseId,"Role id is not defined")
+    mutate(databaseId, {
+      onSuccess: (response) => {
+          toast({
+              title: response?.data?.message,
+              variant: "default",
+          });
+      },
+      onError: (error) => {
+          const { statusCode, message } = handleAxiosError(error);
+          console.log({ statusCode, error });
+          toast({
+              title: "Error",
+              description: message,
+              variant: "destructive",
+          });
+      },
+  });
     setConfirmDialog({...confirmDialog,isOpen:false} as unknown as IConfirmDialog);
   };
 
@@ -79,7 +105,7 @@ const RoleList = () => {
     },
     {
       accessorKey: "actions",
-      cell: ({ row }) => <Actions actions={actions(+row.id)} />,
+      cell: ({ row }) => <Actions actions={actions(+row.original.id)} />,
       size: 5
     },
   ];

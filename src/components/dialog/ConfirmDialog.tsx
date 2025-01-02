@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { FC } from "react";
 import { LucideIcon, Save } from "lucide-react";
+import Layout from "../core/Layout";
 
 export interface IConfirmDialog {
     isOpen: boolean;
@@ -38,8 +39,10 @@ const ConfirmDialog: FC<ConfirmBoxInterface> = ({ confirmDialog, setConfirmDialo
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>
-                            {TitleIcon && <TitleIcon />}
-                            {title}
+                            <Layout gap={1} vAlign="center">
+                                {TitleIcon && <TitleIcon />}
+                                {title}
+                            </Layout>
                         </DialogTitle>
                         <DialogDescription>
                             {subTitle}
