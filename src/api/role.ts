@@ -30,3 +30,19 @@ export const useGetRoles = (filters?: QueryOptions) => {
     enabled: !!filters,
   });
 };
+
+export const useGetModules = (filters?: QueryOptions) => {
+  const { search } = filters || {};
+  return useQuery({
+    queryKey: ["modules", search],
+    queryFn: () => {
+      const params = new URLSearchParams();
+      if (search) params.append("search", search);
+
+      return API.get(`/modules?${params.toString()}`).then(
+        (response) => response.data
+      );
+    },
+    enabled: !!filters,
+  });
+};

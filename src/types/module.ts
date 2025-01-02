@@ -1,11 +1,11 @@
-import { ModulePermission } from "./permission";
+import { Permission } from "./permission";
 
 export interface Module {
   id: string;
   name: string;
   type: string;
   slug: string;
-  permissions: ModulePermission[];
+  permissions?: Permission[];
 }
 
 export enum Modules {

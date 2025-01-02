@@ -6,5 +6,6 @@ export const roleSchema = () => {
       message: "Name is required",
     }),
     description: z.string().trim().optional(),
+    permissions: z.array(z.number()).optional(),
   });
 };
