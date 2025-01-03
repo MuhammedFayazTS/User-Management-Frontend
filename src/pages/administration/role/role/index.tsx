@@ -5,12 +5,18 @@ import { isForm } from '@/utils/common-helper'
 import { useState } from 'react'
 import { getFormActions } from '@/utils/actions'
 import List from './List'
+import { useRoleStore } from '@/store/client'
 
 const Role = () => {
     const [view, setView] = useState<PageType>('create')
+    const resetDatabaseId = useRoleStore((state) => state.reset);
 
     const togglePage = (page: PageType) => {
         setView(page)
+
+        if(page !== 'edit'){
+            resetDatabaseId()
+        }
     }
 
     const actions = getFormActions({
@@ -26,7 +32,7 @@ const Role = () => {
             actions={actions}
         >
             {isForm(view) && <Form />}
-            {view === 'list' && <List />}
+            {view === 'list' && <List togglePage={togglePage} />}
         </Page>
     )
 }

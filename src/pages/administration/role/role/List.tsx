@@ -11,7 +11,7 @@ import { useDeleteRole, useGetRoles } from "@/api/role";
 import { Role } from "@/types/role";
 import { useSearchParams } from "react-router";
 import PermissionBadge from "@/components/PermissionBadge";
-import { useState } from "react";
+import { FC, useState } from "react";
 import ConfirmDialog, { IConfirmDialog } from "@/components/dialog/ConfirmDialog";
 import { useRoleStore } from "@/store/client";
 import { assertDefined } from "@/utils/common-helper";
@@ -19,14 +19,19 @@ import { toast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";
 import { MessageCircleWarningIcon } from "lucide-react";
 
+interface IListProps {
+  togglePage: (view: 'edit') => void;
+}
+
 // Filter fields
 const filterFields: DataTableFilterField<Role>[] = [
   { value: "name", placeholder: "Search by name", label: "Name" },
 ];
 
-const RoleList = () => {
+const RoleList: FC<IListProps> = ({ togglePage }) => {
   const [confirmDialog, setConfirmDialog] = useState<IConfirmDialog>()
   const [searchParams] = useSearchParams();
+  const resetDatabaseId = useRoleStore((state) => state.reset);
   const setDatabaseId = useRoleStore((state) => state.setDatabaseId);
   const databaseId = useRoleStore((state) => state.databaseId);
 
@@ -38,41 +43,47 @@ const RoleList = () => {
   const { data, isLoading } = useGetRoles({ search, sort, page, limit });
   const { mutate } = useDeleteRole();
 
-  const onClickDelete = async (id:number) => {
-   await setDatabaseId(id); 
+  const onClickEdit = async (id: number) => {
+    await setDatabaseId(id);
+    togglePage('edit')
+  }
+
+  const onClickDelete = async (id: number) => {
+    await setDatabaseId(id);
     setConfirmDialog({
       isOpen: true,
       title: "Delete Role",
-      TitleIcon:MessageCircleWarningIcon,
+      TitleIcon: MessageCircleWarningIcon,
       onConfirm: onConfirmDelete,
     });
   };
-  
-  const onConfirmDelete = () => {
-    assertDefined(databaseId,"Role id is not defined")
+
+  const onConfirmDelete = async () => {
+    assertDefined(databaseId, "Role id is not defined")
     mutate(databaseId, {
       onSuccess: (response) => {
-          toast({
-              title: response?.data?.message,
-              variant: "default",
-          });
+        toast({
+          title: response?.data?.message,
+          variant: "default",
+        });
       },
       onError: (error) => {
-          const { statusCode, message } = handleAxiosError(error);
-          console.log({ statusCode, error });
-          toast({
-              title: "Error",
-              description: message,
-              variant: "destructive",
-          });
+        const { statusCode, message } = handleAxiosError(error);
+        console.log({ statusCode, error });
+        toast({
+          title: "Error",
+          description: message,
+          variant: "destructive",
+        });
       },
-  });
-    setConfirmDialog({...confirmDialog,isOpen:false} as unknown as IConfirmDialog);
+    });
+    await resetDatabaseId()
+    setConfirmDialog({ ...confirmDialog, isOpen: false } as unknown as IConfirmDialog);
   };
 
   const actions = (id: number) => {
     const actions: IAction[] = getListActions({
-      onEdit: () => { },
+      onEdit: () => onClickEdit(id),
       onDelete: () => onClickDelete(id),
     })
     return actions

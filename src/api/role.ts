@@ -3,8 +3,11 @@ import API from "./axios-cient";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { DefaultQueryParams } from "@/types/common";
 
-export const roleMutationFn = async (data: NewRole) =>
+export const addRoleMutationFn = async (data: NewRole) =>
   await API.post(`/roles`, data);
+
+export const updateRoleMutationFn = async (id:number,data: NewRole) =>
+  await API.put(`/roles/${id}`, data);
 
 export const roleDeleteFn = async (roleId: number) =>
   await API.delete(`/roles/${roleId}`);
@@ -28,6 +31,27 @@ export const useGetRoles = (filters?: DefaultQueryParams) => {
   });
 };
 
+export const useAddRole = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: addRoleMutationFn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["roles"] });
+    },
+  });
+};
+
+export const useUpdateRole = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: number; data: NewRole }) => 
+      updateRoleMutationFn(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["roles"] });
+    },
+  });
+};
+
 export const useDeleteRole = () => {
   const queryClient = useQueryClient();
 
@@ -36,5 +60,16 @@ export const useDeleteRole = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["roles"] });
     },
+  });
+};
+
+export const useGetRole = (id?: number | null) => {
+  return useQuery({
+    queryKey: ["role", id],
+    queryFn: () => {
+      if (id === undefined) return Promise.reject("No ID provided");
+      return API.get(`/roles/${id}`).then((response) => response.data);
+    },
+    enabled: id != null || !!id, 
   });
 };
