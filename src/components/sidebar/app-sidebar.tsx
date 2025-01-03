@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useAuthContext } from "@/context/auth-provider"
 import { Skeleton } from "../ui/skeleton"
-import { SearchForm } from "../search-form"
+import { SearchForm } from "../core/search-form"
 import { NavSearchResults } from "./nav-search-results"
 import { searchNavMain } from "@/utils/sidebar-helper"
 import { data } from "@/constants/sidebar-items"

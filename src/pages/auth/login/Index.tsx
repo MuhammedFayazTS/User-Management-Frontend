@@ -10,10 +10,10 @@ import {
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { toast } from "@/hooks/use-toast";
-import { loginMutationFn } from "@/api/auth.service";
+import { loginMutationFn } from "@/api/auth";
 import { loginSchema } from "./schema";
 import { handleAxiosError } from "@/api/api-error";
-import GoogleLogin from "@/components/GoogleLogin"
+import GoogleLogin from "@/components/buttons/GoogleLogin"
 import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function Login() {
@@ -35,7 +35,6 @@ export default function Login() {
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         mutate(values, {
             onSuccess: (response) => {
-                console.log(response.data, "data");
                 if (response.data?.mfaRequired) {
                     navigate(`/verify-mfa?email=${values.email}`);
                     return;

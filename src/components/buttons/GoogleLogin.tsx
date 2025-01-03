@@ -1,5 +1,5 @@
-import { Button } from './ui/button'
-import GoogleIcon from './googleIcon'
+import { Button } from '../ui/button'
+import GoogleIcon from '../googleIcon'
 
 const googleLogin = () => {
     const baseURL = import.meta.env.VITE_API_BASE_URL;

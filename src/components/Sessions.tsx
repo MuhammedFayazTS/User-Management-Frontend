@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SessionItem from "./SessionItem";
-import { sessionsQueryFn, sessionDelMutationFn } from "@/api/auth.service";
+import { sessionsQueryFn, sessionDelMutationFn } from "@/api/auth";
 import { Loader } from "lucide-react";
 import { useCallback } from "react";
 import { toast } from "@/hooks/use-toast";

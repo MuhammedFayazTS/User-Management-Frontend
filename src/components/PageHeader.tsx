@@ -1,13 +1,13 @@
 import { Button } from "./ui/button"
 import { IAction } from "@/layout/PageLayout"
-import Layout from "./core/Layout"
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/tooltip"
 interface IPageHeader {
     title: string,
-    actions?: IAction[]
+    withoutTitle?: boolean,
+    actions?: IAction[],
 }
 
-function PageHeader({ title, actions }: IPageHeader) {
+function PageHeader({ title, actions, withoutTitle = true }: IPageHeader) {
     return (
         <>
             <div className={`flex justify-between mb-4`}>
@@ -15,14 +15,26 @@ function PageHeader({ title, actions }: IPageHeader) {
 
                 {actions && actions.length ? (
                     <div className="flex gap-2">
-                        {actions.map(({ title, Icon, disabled }) => {
+                        {actions.map(({ title, Icon, disabled, active, onClick }) => {
                             return (
-                                <Button variant="default" size="icon" disabled={disabled}>
-                                    <Layout gap={1}>
-                                        {Icon && <Icon className="w-5 h-5" />}
-                                        {title}
-                                    </Layout>
-                                </Button>
+                                <TooltipProvider key={title}>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant={active ? "default" : "secondary"}
+                                                size={withoutTitle ? "icon" : "default"}
+                                                disabled={disabled}
+                                                onClick={onClick}
+                                            >
+                                                {Icon && <Icon className="w-5 h-5" />}
+                                                {!withoutTitle && title}
+                                            </Button>
+                                        </TooltipTrigger>
+                                        {withoutTitle && <TooltipContent>
+                                            <p>{title}</p>
+                                        </TooltipContent>}
+                                    </Tooltip>
+                                </TooltipProvider>
                             )
                         })}
                     </div>

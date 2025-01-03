@@ -9,12 +9,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
-import { registerMutationFn } from "@/api/auth.service";
+import { registerMutationFn } from "@/api/auth";
 import { registerSchema } from "./schema";
 import { Link } from "react-router";
 import { useToast } from "@/hooks/use-toast";
 import { handleAxiosError } from "@/api/api-error";
-import GoogleLogin from "@/components/GoogleLogin"
+import GoogleLogin from "@/components/buttons/GoogleLogin"
 import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function SignUp() {

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
-import { forgotPasswordMutationFn } from "@/api/auth.service";
+import { forgotPasswordMutationFn } from "@/api/auth";
 import { ArrowRight, Loader, MailCheckIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { Link, useSearchParams } from "react-router-dom";
