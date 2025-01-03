@@ -23,8 +23,8 @@ export interface DataTableFilterOption<TData> {
 }
 
 export interface DefaultQueryParams{
-  sort?: string | null;
-  search?: string | null;
-  page?: string | null;
-  limit?: string | null;
+  sort?: string;
+  search?: string;
+  page?: string;
+  limit?: string;
 };
