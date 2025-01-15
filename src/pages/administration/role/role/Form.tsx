@@ -17,9 +17,9 @@ import { Module } from '@/types/module';
 import { Loader } from 'lucide-react';
 import { Permission } from '@/types/permission';
 import { useEffect, useState } from 'react';
-import { useGetModules } from '@/api/modules';
 import { useRoleStore } from '@/store/client';
 import SkeletonForm from '@/components/loaders/SkeletonForm';
+import { useGetModules } from '@/store/server/modules';
 
 const RoleForm = () => {
     const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>([])
