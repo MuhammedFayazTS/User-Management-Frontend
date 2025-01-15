@@ -4,10 +4,10 @@ import { DefaultTableSkeleton } from "@/components/core/table/DefaultTableSkelto
 import { DataTableColumnHeader } from "@/components/core/table/DataTableColumnHeader";
 import { useDataTable } from "@/hooks/use-data-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableFilterField } from "@/types/common";
+import { BaseApiResponse, DataTableFilterField } from "@/types/common";
 import { Actions, IAction } from "@/components/core/table/Actions";
 import { getListActions } from "@/utils/actions";
-import { DeleteRoleResponse, useDeleteRole, useGetRoles } from "@/store/server/role";
+import { useDeleteRole, useGetRoles } from "@/store/server/role";
 import { Role } from "@/types/role";
 import { useSearchParams } from "react-router";
 import PermissionBadge from "@/components/PermissionBadge";
@@ -57,7 +57,7 @@ const RoleList: FC<IListProps> = ({ togglePage }) => {
   };
 
   const mutationConfig = {
-    onSuccess: (response: DeleteRoleResponse) => handleSuccessResponse(true, response?.data?.message),
+    onSuccess: (response: BaseApiResponse) => handleSuccessResponse(true, response?.message),
     onError: (error: unknown) => handleMutationError(error),
   };
 

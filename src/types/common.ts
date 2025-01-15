@@ -28,3 +28,13 @@ export interface DefaultQueryParams{
   page?: string;
   limit?: string;
 };
+
+export interface BaseApiResponse {
+  message:string;
+}
+
+export interface BaseGetAllApiResponse extends BaseApiResponse {
+  message:string;
+  pageCount: number;
+  itemCount: number;
+}

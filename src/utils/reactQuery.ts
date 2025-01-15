@@ -37,7 +37,9 @@ export const useGet = <T>(key: string, endpoint: string, params: Record<string, 
 export const usePost = <T, U>(endpoint: string, invalidateKey?: string) => {
   const queryClient = useQueryClient();
   return useMutation<T, Error, U>({
-    mutationFn: (data) => API.post(endpoint, data),
+    mutationFn: (data) => API.post(endpoint, data).then(
+      (response) => response.data
+    ),
     onSuccess: () => {
       if (invalidateKey) {
         queryClient.invalidateQueries({ queryKey: [invalidateKey] });
@@ -55,7 +57,9 @@ export const usePost = <T, U>(endpoint: string, invalidateKey?: string) => {
 export const usePut = <T, U>(endpoint: string, invalidateKey?: string) => {
   const queryClient = useQueryClient();
   return useMutation<T, Error, { id: number; data: U }>({
-    mutationFn: ({ id, data }) => API.put(`${endpoint}/${id}`, data),
+    mutationFn: ({ id, data }) => API.put(`${endpoint}/${id}`, data).then(
+      (response) => response.data
+    ),
     onSuccess: () => {
       if (invalidateKey) {
         queryClient.invalidateQueries({ queryKey: [invalidateKey] });
@@ -73,7 +77,9 @@ export const usePut = <T, U>(endpoint: string, invalidateKey?: string) => {
 export const useDelete = <T>(endpoint: string, invalidateKey?: string) => {
   const queryClient = useQueryClient();
   return useMutation<T, Error, number>({
-    mutationFn: (id) => API.delete(`${endpoint}/${id}`),
+    mutationFn: (id) => API.delete(`${endpoint}/${id}`).then(
+      (response) => response.data
+    ),
     onSuccess: () => {
       if (invalidateKey) {
         queryClient.invalidateQueries({ queryKey: [invalidateKey] });

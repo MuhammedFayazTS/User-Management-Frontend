@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
-import { AddOrUpdateRoleResponse, useAddRole, useGetRole, useUpdateRole } from '@/store/server/role';
+import { useAddRole, useGetRole, useUpdateRole } from '@/store/server/role';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Layout from '@/components/core/Layout';
 import DefaultTextArea from '@/components/core/DefaultTextArea';
@@ -20,6 +20,7 @@ import SkeletonForm from '@/components/loaders/SkeletonForm';
 import { useGetModules } from '@/store/server/modules';
 import { handleMutationError, handleSuccessResponse } from '@/utils/handleMutationResponse';
 import EditButton from '@/components/buttons/EditButton';
+import { BaseApiResponse } from '@/types/common';
 
 const RoleForm = () => {
     const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>([])
@@ -62,7 +63,7 @@ const RoleForm = () => {
     }
 
     const mutationConfig = {
-        onSuccess: (response: AddOrUpdateRoleResponse) => handleSuccessResponse(true, response?.data?.message, successCallback),
+        onSuccess: (response: BaseApiResponse) => handleSuccessResponse(true, response?.message, successCallback),
         onError: (error: unknown) => handleMutationError(error, errorCallback),
     };
 

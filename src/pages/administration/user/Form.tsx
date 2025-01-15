@@ -55,7 +55,7 @@ const RoleForm = () => {
     }
 
     const mutationConfig = {
-        onSuccess: (response: AddOrUpdateUserResponse) => handleSuccessResponse(true, response?.data?.message, successCallback),
+        onSuccess: (response: AddOrUpdateUserResponse) => handleSuccessResponse(true, response?.message, successCallback),
         onError: (error: unknown) => handleMutationError(error, errorCallback),
     };
 

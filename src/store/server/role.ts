@@ -1,38 +1,6 @@
-import { DefaultQueryParams } from "@/types/common";
-import { Permission } from "@/types/permission";
-import { Role } from "@/types/role";
+import { BaseApiResponse, DefaultQueryParams } from "@/types/common";
+import { GetRoleResponse, GetRolesResponse, NewRole } from "@/types/role";
 import { useDelete, useGet, usePost, usePut } from "@/utils/reactQuery";
-
-// response types
-interface GetRolesResponse {
-  message: string;
-  roles: {
-    count: number;
-    rows: Role[] | [];
-  };
-  pageCount: number;
-  itemCount: number;
-}
-
-interface GetRoleResponse {
-  role: Role;
-}
-
-export interface DeleteRoleResponse {
-  data: { message: string };
-}
-
-export interface AddOrUpdateRoleResponse {
-  data: {
-    message: string;
-  };
-}
-
-// payload types
-interface AddOrUpdateRolePayload {
-  name: string;
-  permissions?: Permission[];
-}
 
 export const useGetRoles = (filters?: DefaultQueryParams) => {
   const { search, sort, page = "1", limit = "10" } = filters || {};
@@ -49,13 +17,13 @@ export const useGetRole = (id?: number | null) => {
 };
 
 export const useAddRole = () => {
-  return usePost<AddOrUpdateRoleResponse, AddOrUpdateRolePayload>("/roles", "roles");
+  return usePost<BaseApiResponse, NewRole>("/roles", "roles");
 };
 
 export const useUpdateRole = () => {
-  return usePut<AddOrUpdateRoleResponse, AddOrUpdateRolePayload>("/roles", "roles");
+  return usePut<BaseApiResponse, NewRole>("/roles", "roles");
 };
 
 export const useDeleteRole = () => {
-  return useDelete<DeleteRoleResponse>(`/roles`, "roles");
+  return useDelete<BaseApiResponse>(`/roles`, "roles");
 };
