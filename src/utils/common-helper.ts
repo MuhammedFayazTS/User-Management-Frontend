@@ -1,3 +1,4 @@
+import { toast } from "@/hooks/use-toast";
 import { PageType } from "@/layout/PageLayout";
 
 export const isForm = (page: PageType) => {
@@ -9,12 +10,21 @@ export const isForm = (page: PageType) => {
 
 export function assertDefined<T>(
   value: T | undefined | null,
-  msg?: string
+  msg?: string,
+  showToast?:boolean
 ): asserts value is T {
   if (value === undefined) {
+    if(showToast) toast({
+      title:msg ?? "value cant be undefined",
+      variant: "destructive",
+    })
     throw new Error(msg ?? "value cant be undefined");
   }
   if (value === null) {
+    if(showToast) toast({
+      title:msg ?? "value cant be null",
+      variant: "destructive",
+    })
     throw new Error(msg ?? "value cant be null");
   }
 }

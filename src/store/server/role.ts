@@ -18,7 +18,7 @@ interface GetRoleResponse {
   role: Role;
 }
 
-interface DeleteRoleResponse {
+export interface DeleteRoleResponse {
   data: { message: string };
 }
 
@@ -57,5 +57,5 @@ export const useUpdateRole = () => {
 };
 
 export const useDeleteRole = () => {
-  return useDelete<DeleteRoleResponse>("/roles", "roles");
+  return useDelete<DeleteRoleResponse>(`/roles`, "roles");
 };
