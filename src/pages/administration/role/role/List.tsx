@@ -7,7 +7,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableFilterField } from "@/types/common";
 import { Actions, IAction } from "@/components/core/table/Actions";
 import { getListActions } from "@/utils/actions";
-import { useDeleteRole, useGetRoles } from "@/api/role";
+import { useDeleteRole, useGetRoles } from "@/store/server/role";
 import { Role } from "@/types/role";
 import { useSearchParams } from "react-router";
 import PermissionBadge from "@/components/PermissionBadge";
@@ -35,10 +35,10 @@ const RoleList: FC<IListProps> = ({ togglePage }) => {
   const setDatabaseId = useRoleStore((state) => state.setDatabaseId);
   const databaseId = useRoleStore((state) => state.databaseId);
 
-  const search = searchParams.get("name")
-  const sort = searchParams.get("sort");
-  const page = searchParams.get("page");
-  const limit = searchParams.get("limit");
+  const search = searchParams.get("name") || undefined
+  const sort = searchParams.get("sort") || undefined;
+  const page = searchParams.get("page") || '1';
+  const limit = searchParams.get("limit") || '10';
 
   const { data, isLoading } = useGetRoles({ search, sort, page, limit });
   const { mutate } = useDeleteRole();

@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import { toast } from '@/hooks/use-toast';
 import { handleAxiosError } from '@/api/api-error';
-import { useAddRole, useGetRole, useUpdateRole } from '@/api/role';
+import { useAddRole, useGetRole, useUpdateRole } from '@/store/server/role';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Layout from '@/components/core/Layout';
 import DefaultTextArea from '@/components/core/DefaultTextArea';
@@ -29,8 +29,8 @@ const RoleForm = () => {
     const { mutate: addRoleMutation, isPending: isAddRolePending } = useAddRole();
     const { mutate: updateRoleMutation, isPending: isUpdateRolePending } = useUpdateRole();
 
-    const { data: modulesData, isLoading: isModulesLoading } = useGetModules({ search: null })
-    const { data: roleData, isLoading } = useGetRole(databaseId)
+    const { data: modulesData, isLoading: isModulesLoading } = useGetModules({ search: undefined });
+    const { data: roleData, isLoading } = useGetRole(databaseId ?? undefined);
 
     const { setIsLoading } = useHeaderContext()
     const formSchema = roleSchema()
@@ -103,8 +103,6 @@ const RoleForm = () => {
         }
         await resetDatabaseId()
     };
-
-    console.log('Form Errors:', form.formState.errors);
 
     return (
         <Card className={isLoading ? 'w-[650px]' : 'w-full'}>

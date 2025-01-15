@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
  * @param params - Optional query parameters for the GET request.
  * @returns A React Query useQuery hook for the GET request.
  */
-export const useGet = <T>(key: string, endpoint: string, params: Record<string, string | number | undefined> = {}) => {
+export const useGet = <T>(key: string, endpoint: string, params: Record<string, string | number | undefined> = {},enabled: boolean = true) => {
   return useQuery<T>({
     queryKey: [key, params],
     queryFn: () => {
@@ -24,7 +24,7 @@ export const useGet = <T>(key: string, endpoint: string, params: Record<string, 
         (response) => response.data
       );
     },
-    enabled: !!params,
+    enabled: enabled && !!endpoint,
   });
 };
 
