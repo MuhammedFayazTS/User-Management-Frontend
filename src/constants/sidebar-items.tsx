@@ -11,6 +11,10 @@ export const data = {
           title: "Role",
           url: "/admin/role",
         },
+        {
+          title: "User",
+          url: "/admin/user",
+        },
       ],
     },
     {

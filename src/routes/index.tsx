@@ -14,6 +14,7 @@ import Session from '@/pages/account/sessions/Index'
 import VerifyMfa from '@/pages/auth/verify-mfa/Index'
 import MFA from '@/pages/account/mfa/Index'
 import Role from '@/pages/administration/role'
+import User from '@/pages/administration/user'
 
 const AppRoutes = () => {
     return (
@@ -38,6 +39,7 @@ const AppRoutes = () => {
                     <Route path="sessions" element={<Session/>} />
                     <Route path="mfa" element={<MFA/>} />
                     <Route path="admin/role" element={<Role/>} />
+                    <Route path="admin/user" element={<User/>} />
                 </Route>
             </Route>
         </Routes>
