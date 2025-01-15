@@ -1,12 +1,11 @@
+import { useEffect, useState } from 'react';
 import DefaultTextInput from '@/components/core/DefaultTextInput'
 import { roleSchema } from './schema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
-import { toast } from '@/hooks/use-toast';
-import { handleAxiosError } from '@/api/api-error';
-import { useAddRole, useGetRole, useUpdateRole } from '@/api/role';
+import { AddOrUpdateRoleResponse, useAddRole, useGetRole, useUpdateRole } from '@/store/server/role';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Layout from '@/components/core/Layout';
 import DefaultTextArea from '@/components/core/DefaultTextArea';
@@ -16,21 +15,21 @@ import PermissionCards from '@/components/cards/PermissionCards';
 import { Module } from '@/types/module';
 import { Loader } from 'lucide-react';
 import { Permission } from '@/types/permission';
-import { useEffect, useState } from 'react';
-import { useGetModules } from '@/api/modules';
 import { useRoleStore } from '@/store/client';
 import SkeletonForm from '@/components/loaders/SkeletonForm';
+import { useGetModules } from '@/store/server/modules';
+import { handleMutationError, handleSuccessResponse } from '@/utils/handleMutationResponse';
+import EditButton from '@/components/buttons/EditButton';
 
 const RoleForm = () => {
     const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>([])
-    const resetDatabaseId = useRoleStore((state) => state.reset);
-    const databaseId = useRoleStore((state) => state.databaseId);
+    const { reset: resetDatabaseId, toggleViewPage, databaseId, isViewPage } = useRoleStore((state) => state);
 
     const { mutate: addRoleMutation, isPending: isAddRolePending } = useAddRole();
     const { mutate: updateRoleMutation, isPending: isUpdateRolePending } = useUpdateRole();
 
-    const { data: modulesData, isLoading: isModulesLoading } = useGetModules({ search: null })
-    const { data: roleData, isLoading } = useGetRole(databaseId)
+    const { data: modulesData, isLoading: isModulesLoading } = useGetModules({ search: undefined });
+    const { data: roleData, isLoading } = useGetRole(databaseId ?? undefined);
 
     const { setIsLoading } = useHeaderContext()
     const formSchema = roleSchema()
@@ -53,63 +52,40 @@ const RoleForm = () => {
         }
     }, [isLoading, roleData, reset]);
 
+    const successCallback = () => {
+        reset();
+        setIsLoading(false)
+    }
+
+    const errorCallback = () => {
+        setIsLoading(false)
+    }
+
+    const mutationConfig = {
+        onSuccess: (response: AddOrUpdateRoleResponse) => handleSuccessResponse(true, response?.data?.message, successCallback),
+        onError: (error: unknown) => handleMutationError(error, errorCallback),
+    };
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true)
         const updatedValues = { ...values, permissions: selectedPermissions }
         if (!databaseId) {
-            addRoleMutation(updatedValues, {
-                onSuccess: (response) => {
-                    reset();
-                    toast({
-                        title: response?.data?.message,
-                        variant: "default",
-                    });
-                    setIsLoading(false);
-                },
-                onError: (error) => {
-                    const { statusCode, message } = handleAxiosError(error);
-                    console.log({ statusCode, error });
-                    toast({
-                        title: "Error",
-                        description: message,
-                        variant: "destructive",
-                    });
-                    setIsLoading(false);
-                },
-            });
+            addRoleMutation(updatedValues, mutationConfig);
         } else {
-            updateRoleMutation(
-                { id: databaseId, data: updatedValues },
-                {
-                onSuccess: (response) => {
-                    reset();
-                    toast({
-                        title: response?.data?.message,
-                        variant: "default",
-                    });
-                    setIsLoading(false);
-                },
-                onError: (error) => {
-                    const { statusCode, message } = handleAxiosError(error);
-                    console.log({ statusCode, error });
-                    toast({
-                        title: "Error",
-                        description: message,
-                        variant: "destructive",
-                    });
-                    setIsLoading(false);
-                },
-            });
+            updateRoleMutation({ id: databaseId, data: updatedValues }, mutationConfig);
         }
         await resetDatabaseId()
     };
 
-    console.log('Form Errors:', form.formState.errors);
+    const onClickEditButton = () => toggleViewPage(false)
 
     return (
         <Card className={isLoading ? 'w-[650px]' : 'w-full'}>
             <CardHeader>
-                <CardTitle>{databaseId ? 'Update' : 'Create'} Role</CardTitle>
+                <CardTitle>
+                    {databaseId ? 'Update' : 'Create'} Role
+                    {isViewPage && <EditButton customClass='ml-3' onClick={onClickEditButton} />}
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 {
@@ -123,11 +99,13 @@ const RoleForm = () => {
                                             name='name'
                                             label='Name'
                                             control={form.control}
+                                            readOnly={isViewPage}
                                         />
                                         <DefaultTextArea
                                             name='description'
                                             label='Description'
                                             control={form.control}
+                                            readOnly={isViewPage}
                                         />
                                     </Layout>
                                     <Layout>
@@ -136,12 +114,16 @@ const RoleForm = () => {
                                                 <Loader className='animate-spin' />
                                                 :
                                                 modulesData?.modules?.rows?.map((module: Module) => (
-                                                    <PermissionCards module={module} setUserSelectedPermissions={setSelectedPermissions} userSelectedPermissions={selectedPermissions} />
+                                                    <PermissionCards
+                                                        module={module}
+                                                        isViewPage={isViewPage}
+                                                        setUserSelectedPermissions={setSelectedPermissions}
+                                                        userSelectedPermissions={selectedPermissions} />
                                                 ))
                                         }
                                     </Layout>
                                 </Layout>
-                                <FormFooter isSubmitting={isAddRolePending || isUpdateRolePending} />
+                                {!isViewPage && <FormFooter isSubmitting={isAddRolePending || isUpdateRolePending} />}
                             </form>
                         </Form>)}
             </CardContent>

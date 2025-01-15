@@ -7,20 +7,20 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableFilterField } from "@/types/common";
 import { Actions, IAction } from "@/components/core/table/Actions";
 import { getListActions } from "@/utils/actions";
-import { useDeleteRole, useGetRoles } from "@/api/role";
+import { DeleteRoleResponse, useDeleteRole, useGetRoles } from "@/store/server/role";
 import { Role } from "@/types/role";
 import { useSearchParams } from "react-router";
 import PermissionBadge from "@/components/PermissionBadge";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import ConfirmDialog, { IConfirmDialog } from "@/components/dialog/ConfirmDialog";
 import { useRoleStore } from "@/store/client";
 import { assertDefined } from "@/utils/common-helper";
-import { toast } from "@/hooks/use-toast";
-import { handleAxiosError } from "@/api/api-error";
 import { MessageCircleWarningIcon } from "lucide-react";
+import { handleMutationError, handleSuccessResponse } from "@/utils/handleMutationResponse";
+import { PageType } from "@/layout/PageLayout";
 
 interface IListProps {
-  togglePage: (view: 'edit') => void;
+  togglePage: (view: PageType) => void;
 }
 
 // Filter fields
@@ -31,17 +31,21 @@ const filterFields: DataTableFilterField<Role>[] = [
 const RoleList: FC<IListProps> = ({ togglePage }) => {
   const [confirmDialog, setConfirmDialog] = useState<IConfirmDialog>()
   const [searchParams] = useSearchParams();
-  const resetDatabaseId = useRoleStore((state) => state.reset);
-  const setDatabaseId = useRoleStore((state) => state.setDatabaseId);
-  const databaseId = useRoleStore((state) => state.databaseId);
+  const { reset: resetDatabaseId, setDatabaseId, databaseId, toggleViewPage } = useRoleStore((state) => state);
 
-  const search = searchParams.get("name")
-  const sort = searchParams.get("sort");
-  const page = searchParams.get("page");
-  const limit = searchParams.get("limit");
+  const search = searchParams.get("name") || undefined
+  const sort = searchParams.get("sort") || undefined;
+  const page = searchParams.get("page") || '1';
+  const limit = searchParams.get("limit") || '10';
 
   const { data, isLoading } = useGetRoles({ search, sort, page, limit });
   const { mutate } = useDeleteRole();
+
+  const onClickView = async (id: number) => {
+    await setDatabaseId(id);
+    togglePage('edit')
+    toggleViewPage(true)
+  }
 
   const onClickEdit = async (id: number) => {
     await setDatabaseId(id);
@@ -50,39 +54,34 @@ const RoleList: FC<IListProps> = ({ togglePage }) => {
 
   const onClickDelete = async (id: number) => {
     await setDatabaseId(id);
-    setConfirmDialog({
-      isOpen: true,
-      title: "Delete Role",
-      TitleIcon: MessageCircleWarningIcon,
-      onConfirm: onConfirmDelete,
-    });
   };
 
+  const mutationConfig = {
+    onSuccess: (response: DeleteRoleResponse) => handleSuccessResponse(true, response?.data?.message),
+    onError: (error: unknown) => handleMutationError(error),
+  };
+
+  useEffect(() => {
+    if (databaseId) {
+      setConfirmDialog({
+        isOpen: true,
+        title: "Delete Role",
+        TitleIcon: MessageCircleWarningIcon,
+        onConfirm: onConfirmDelete,
+      });
+    }
+  }, [databaseId]);
+
   const onConfirmDelete = async () => {
-    assertDefined(databaseId, "Role id is not defined")
-    mutate(databaseId, {
-      onSuccess: (response) => {
-        toast({
-          title: response?.data?.message,
-          variant: "default",
-        });
-      },
-      onError: (error) => {
-        const { statusCode, message } = handleAxiosError(error);
-        console.log({ statusCode, error });
-        toast({
-          title: "Error",
-          description: message,
-          variant: "destructive",
-        });
-      },
-    });
+    assertDefined(databaseId, "Role id is not defined", true)
+    mutate(databaseId, mutationConfig);
     await resetDatabaseId()
     setConfirmDialog({ ...confirmDialog, isOpen: false } as unknown as IConfirmDialog);
   };
 
   const actions = (id: number) => {
     const actions: IAction[] = getListActions({
+      onView: () => onClickView(id),
       onEdit: () => onClickEdit(id),
       onDelete: () => onClickDelete(id),
     })
