@@ -9,6 +9,7 @@ interface IDefaultTextAreaProps<TFormValues extends FieldValues> {
     placeholder?: string;
     autoComplete?: 'off' | 'on',
     width?: number
+    readOnly?: boolean
 }
 
 const DefaultTextArea = <TFormValues extends FieldValues>({
@@ -17,7 +18,8 @@ const DefaultTextArea = <TFormValues extends FieldValues>({
     label,
     placeholder,
     autoComplete,
-    width
+    width,
+    readOnly = false,
 }: IDefaultTextAreaProps<TFormValues>) => {
     return (
         <FormField
@@ -27,7 +29,11 @@ const DefaultTextArea = <TFormValues extends FieldValues>({
                 <FormItem style={{ width: width || '100%' }}>
                     <FormLabel className="dark:text-[#f1f7feb5] text-sm">{label}</FormLabel>
                     <FormControl>
-                        <Textarea placeholder={placeholder} autoComplete={autoComplete} {...field} />
+                        <Textarea
+                            placeholder={placeholder}
+                            autoComplete={autoComplete}
+                            readOnly={readOnly}
+                            {...field} />
                     </FormControl>
                     <FormMessage />
                 </FormItem>

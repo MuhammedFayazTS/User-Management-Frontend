@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import DefaultTextInput from '@/components/core/DefaultTextInput'
 import { roleSchema } from './schema';
 import { useForm } from 'react-hook-form';
@@ -14,16 +15,15 @@ import PermissionCards from '@/components/cards/PermissionCards';
 import { Module } from '@/types/module';
 import { Loader } from 'lucide-react';
 import { Permission } from '@/types/permission';
-import { useEffect, useState } from 'react';
 import { useRoleStore } from '@/store/client';
 import SkeletonForm from '@/components/loaders/SkeletonForm';
 import { useGetModules } from '@/store/server/modules';
 import { handleMutationError, handleSuccessResponse } from '@/utils/handleMutationResponse';
+import EditButton from '@/components/buttons/EditButton';
 
 const RoleForm = () => {
     const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>([])
-    const resetDatabaseId = useRoleStore((state) => state.reset);
-    const databaseId = useRoleStore((state) => state.databaseId);
+    const { reset: resetDatabaseId, toggleViewPage, databaseId, isViewPage } = useRoleStore((state) => state);
 
     const { mutate: addRoleMutation, isPending: isAddRolePending } = useAddRole();
     const { mutate: updateRoleMutation, isPending: isUpdateRolePending } = useUpdateRole();
@@ -51,7 +51,7 @@ const RoleForm = () => {
             setSelectedPermissions(roleData.role?.permissions)
         }
     }, [isLoading, roleData, reset]);
-    
+
     const successCallback = () => {
         reset();
         setIsLoading(false)
@@ -62,8 +62,8 @@ const RoleForm = () => {
     }
 
     const mutationConfig = {
-        onSuccess: (response:AddOrUpdateRoleResponse) => handleSuccessResponse(true,response?.data?.message,successCallback),
-        onError: (error: unknown) => handleMutationError(error,errorCallback),
+        onSuccess: (response: AddOrUpdateRoleResponse) => handleSuccessResponse(true, response?.data?.message, successCallback),
+        onError: (error: unknown) => handleMutationError(error, errorCallback),
     };
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -77,10 +77,15 @@ const RoleForm = () => {
         await resetDatabaseId()
     };
 
+    const onClickEditButton = () => toggleViewPage(false)
+
     return (
         <Card className={isLoading ? 'w-[650px]' : 'w-full'}>
             <CardHeader>
-                <CardTitle>{databaseId ? 'Update' : 'Create'} Role</CardTitle>
+                <CardTitle>
+                    {databaseId ? 'Update' : 'Create'} Role
+                    {isViewPage && <EditButton customClass='ml-3' onClick={onClickEditButton} />}
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 {
@@ -94,11 +99,13 @@ const RoleForm = () => {
                                             name='name'
                                             label='Name'
                                             control={form.control}
+                                            readOnly={isViewPage}
                                         />
                                         <DefaultTextArea
                                             name='description'
                                             label='Description'
                                             control={form.control}
+                                            readOnly={isViewPage}
                                         />
                                     </Layout>
                                     <Layout>
@@ -107,12 +114,16 @@ const RoleForm = () => {
                                                 <Loader className='animate-spin' />
                                                 :
                                                 modulesData?.modules?.rows?.map((module: Module) => (
-                                                    <PermissionCards module={module} setUserSelectedPermissions={setSelectedPermissions} userSelectedPermissions={selectedPermissions} />
+                                                    <PermissionCards
+                                                        module={module}
+                                                        isViewPage={isViewPage}
+                                                        setUserSelectedPermissions={setSelectedPermissions}
+                                                        userSelectedPermissions={selectedPermissions} />
                                                 ))
                                         }
                                     </Layout>
                                 </Layout>
-                                <FormFooter isSubmitting={isAddRolePending || isUpdateRolePending} />
+                                {!isViewPage && <FormFooter isSubmitting={isAddRolePending || isUpdateRolePending} />}
                             </form>
                         </Form>)}
             </CardContent>

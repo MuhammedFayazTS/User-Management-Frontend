@@ -17,9 +17,10 @@ import { useRoleStore } from "@/store/client";
 import { assertDefined } from "@/utils/common-helper";
 import { MessageCircleWarningIcon } from "lucide-react";
 import { handleMutationError, handleSuccessResponse } from "@/utils/handleMutationResponse";
+import { PageType } from "@/layout/PageLayout";
 
 interface IListProps {
-  togglePage: (view: 'edit') => void;
+  togglePage: (view: PageType) => void;
 }
 
 // Filter fields
@@ -30,9 +31,7 @@ const filterFields: DataTableFilterField<Role>[] = [
 const RoleList: FC<IListProps> = ({ togglePage }) => {
   const [confirmDialog, setConfirmDialog] = useState<IConfirmDialog>()
   const [searchParams] = useSearchParams();
-  const resetDatabaseId = useRoleStore((state) => state.reset);
-  const setDatabaseId = useRoleStore((state) => state.setDatabaseId);
-  const databaseId = useRoleStore((state) => state.databaseId);
+  const { reset: resetDatabaseId, setDatabaseId, databaseId, toggleViewPage } = useRoleStore((state) => state);
 
   const search = searchParams.get("name") || undefined
   const sort = searchParams.get("sort") || undefined;
@@ -42,13 +41,19 @@ const RoleList: FC<IListProps> = ({ togglePage }) => {
   const { data, isLoading } = useGetRoles({ search, sort, page, limit });
   const { mutate } = useDeleteRole();
 
+  const onClickView = async (id: number) => {
+    await setDatabaseId(id);
+    togglePage('edit')
+    toggleViewPage(true)
+  }
+
   const onClickEdit = async (id: number) => {
     await setDatabaseId(id);
     togglePage('edit')
   }
 
   const onClickDelete = async (id: number) => {
-    await setDatabaseId(id); 
+    await setDatabaseId(id);
   };
 
   const mutationConfig = {
@@ -59,16 +64,16 @@ const RoleList: FC<IListProps> = ({ togglePage }) => {
   useEffect(() => {
     if (databaseId) {
       setConfirmDialog({
-      isOpen: true,
-      title: "Delete Role",
-      TitleIcon: MessageCircleWarningIcon,
-      onConfirm: onConfirmDelete,
-    });
+        isOpen: true,
+        title: "Delete Role",
+        TitleIcon: MessageCircleWarningIcon,
+        onConfirm: onConfirmDelete,
+      });
     }
   }, [databaseId]);
 
   const onConfirmDelete = async () => {
-    assertDefined(databaseId, "Role id is not defined",true)
+    assertDefined(databaseId, "Role id is not defined", true)
     mutate(databaseId, mutationConfig);
     await resetDatabaseId()
     setConfirmDialog({ ...confirmDialog, isOpen: false } as unknown as IConfirmDialog);
@@ -76,6 +81,7 @@ const RoleList: FC<IListProps> = ({ togglePage }) => {
 
   const actions = (id: number) => {
     const actions: IAction[] = getListActions({
+      onView: () => onClickView(id),
       onEdit: () => onClickEdit(id),
       onDelete: () => onClickDelete(id),
     })

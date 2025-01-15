@@ -10,8 +10,9 @@ interface IDefaultTextInputProps<TFormValues extends FieldValues> {
     label?: string;
     type?: InputType;
     placeholder?: string;
-    autoComplete?: 'off' | 'on',
+    autoComplete?: 'off' | 'on'
     width?: number
+    readOnly?: boolean
 }
 
 const DefaultTextInput = <TFormValues extends FieldValues>({
@@ -21,7 +22,8 @@ const DefaultTextInput = <TFormValues extends FieldValues>({
     placeholder,
     type = "text",
     autoComplete,
-    width
+    width,
+    readOnly = false,
 }: IDefaultTextInputProps<TFormValues>) => {
     return (
         <FormField
@@ -31,7 +33,7 @@ const DefaultTextInput = <TFormValues extends FieldValues>({
                 <FormItem style={{ width: width || '100%' }}>
                     <FormLabel className="dark:text-[#f1f7feb5] text-sm">{label}</FormLabel>
                     <FormControl>
-                        <Input placeholder={placeholder} type={type} autoComplete={autoComplete} {...field} />
+                        <Input placeholder={placeholder} type={type} autoComplete={autoComplete} readOnly={readOnly} {...field} />
                     </FormControl>
                     <FormMessage />
                 </FormItem>

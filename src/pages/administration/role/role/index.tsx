@@ -31,7 +31,7 @@ const Role = () => {
             parentModules={getParentModuleBreadcrumb(ParentModules.ADMINISTRATION)}
             actions={actions}
         >
-            {isForm(view) && <Form />}
+            {isForm(view) && <Form/>}
             {view === 'list' && <List togglePage={togglePage} />}
         </Page>
     )
