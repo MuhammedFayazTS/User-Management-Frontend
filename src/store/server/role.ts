@@ -22,13 +22,7 @@ interface DeleteRoleResponse {
   data: { message: string };
 }
 
-interface AddRoleResponse {
-  data: {
-    message: string;
-  };
-}
-
-interface UpdateRoleResponse {
+export interface AddOrUpdateRoleResponse {
   data: {
     message: string;
   };
@@ -55,11 +49,11 @@ export const useGetRole = (id?: number | null) => {
 };
 
 export const useAddRole = () => {
-  return usePost<AddRoleResponse, AddOrUpdateRolePayload>("/roles", "roles");
+  return usePost<AddOrUpdateRoleResponse, AddOrUpdateRolePayload>("/roles", "roles");
 };
 
 export const useUpdateRole = () => {
-  return usePut<UpdateRoleResponse, AddOrUpdateRolePayload>("/roles", "roles");
+  return usePut<AddOrUpdateRoleResponse, AddOrUpdateRolePayload>("/roles", "roles");
 };
 
 export const useDeleteRole = () => {

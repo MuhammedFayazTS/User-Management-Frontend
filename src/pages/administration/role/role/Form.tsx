@@ -4,9 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
-import { toast } from '@/hooks/use-toast';
-import { handleAxiosError } from '@/api/api-error';
-import { useAddRole, useGetRole, useUpdateRole } from '@/store/server/role';
+import { AddOrUpdateRoleResponse, useAddRole, useGetRole, useUpdateRole } from '@/store/server/role';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Layout from '@/components/core/Layout';
 import DefaultTextArea from '@/components/core/DefaultTextArea';
@@ -20,6 +18,7 @@ import { useEffect, useState } from 'react';
 import { useRoleStore } from '@/store/client';
 import SkeletonForm from '@/components/loaders/SkeletonForm';
 import { useGetModules } from '@/store/server/modules';
+import { handleMutationError, handleSuccessResponse } from '@/utils/handleMutationResponse';
 
 const RoleForm = () => {
     const [selectedPermissions, setSelectedPermissions] = useState<Permission[]>([])
@@ -52,54 +51,28 @@ const RoleForm = () => {
             setSelectedPermissions(roleData.role?.permissions)
         }
     }, [isLoading, roleData, reset]);
+    
+    const successCallback = () => {
+        reset();
+        setIsLoading(false)
+    }
+
+    const errorCallback = () => {
+        setIsLoading(false)
+    }
+
+    const mutationConfig = {
+        onSuccess: (response:AddOrUpdateRoleResponse) => handleSuccessResponse(true,response?.data?.message,successCallback),
+        onError: (error: unknown) => handleMutationError(error,errorCallback),
+    };
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true)
         const updatedValues = { ...values, permissions: selectedPermissions }
         if (!databaseId) {
-            addRoleMutation(updatedValues, {
-                onSuccess: (response) => {
-                    reset();
-                    toast({
-                        title: response?.data?.message,
-                        variant: "default",
-                    });
-                    setIsLoading(false);
-                },
-                onError: (error) => {
-                    const { statusCode, message } = handleAxiosError(error);
-                    console.log({ statusCode, error });
-                    toast({
-                        title: "Error",
-                        description: message,
-                        variant: "destructive",
-                    });
-                    setIsLoading(false);
-                },
-            });
+            addRoleMutation(updatedValues, mutationConfig);
         } else {
-            updateRoleMutation(
-                { id: databaseId, data: updatedValues },
-                {
-                onSuccess: (response) => {
-                    reset();
-                    toast({
-                        title: response?.data?.message,
-                        variant: "default",
-                    });
-                    setIsLoading(false);
-                },
-                onError: (error) => {
-                    const { statusCode, message } = handleAxiosError(error);
-                    console.log({ statusCode, error });
-                    toast({
-                        title: "Error",
-                        description: message,
-                        variant: "destructive",
-                    });
-                    setIsLoading(false);
-                },
-            });
+            updateRoleMutation({ id: databaseId, data: updatedValues }, mutationConfig);
         }
         await resetDatabaseId()
     };
