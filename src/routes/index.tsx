@@ -13,7 +13,7 @@ import Settings from '@/pages/Settings/Index'
 import Session from '@/pages/account/sessions/Index'
 import VerifyMfa from '@/pages/auth/verify-mfa/Index'
 import MFA from '@/pages/account/mfa/Index'
-import Role from '@/pages/administration/role/role'
+import Role from '@/pages/administration/role'
 
 const AppRoutes = () => {
     return (
