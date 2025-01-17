@@ -1,3 +1,4 @@
+import { SelectOption } from "@/components/core/DefaultSelect";
 import { BaseApiResponse, BaseGetAllApiResponse } from "./common";
 import { Permission } from "./permission";
 
@@ -30,4 +31,8 @@ export interface GetRolesResponse extends BaseGetAllApiResponse {
 
 export interface GetRoleResponse extends BaseApiResponse {
   role: Role;
+}
+
+export interface GetRolesForSelectResponse extends BaseApiResponse {
+  roles: SelectOption[];
 }

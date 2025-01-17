@@ -5,12 +5,14 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  roleId: number
 }
 
 export interface NewUserPayload {
   firstName: string;
   lastName: string;
   email: string;
+  roleId: number;
 }
 
 export interface AddOrUpdateUserResponse extends BaseApiResponse {

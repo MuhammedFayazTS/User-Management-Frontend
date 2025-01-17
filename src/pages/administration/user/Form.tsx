@@ -14,13 +14,16 @@ import EditButton from '@/components/buttons/EditButton';
 import { userSchema } from './schema';
 import { useAddUser } from '@/store/server/user';
 import { AddOrUpdateUserResponse } from '@/types/user';
+import { DefaultSelect } from '@/components/core/DefaultSelect';
+import { useGetRolesForSelect } from '@/store/server/role';
 
-const RoleForm = () => {
+const UserForm = () => {
     const { reset: resetDatabaseId, toggleViewPage, databaseId, isViewPage } = useRoleStore((state) => state);
 
     const isLoading =false //temperory
 
     const { mutate: addUserMutation, isPending: isAddUserPending } = useAddUser();
+    const { data: rolesForSelect, isLoading:isRolesLoading } = useGetRolesForSelect();
     // const { mutate: updateRoleMutation, isPending: isUpdateRolePending } = useUpdateRole();
     // const { data: roleData, isLoading } = useGetRole(databaseId ?? undefined);
 
@@ -33,6 +36,7 @@ const RoleForm = () => {
             firstName: "",
             lastName: "",
             email: "",
+            roleId:"" as unknown as number
         },
     });
 
@@ -105,6 +109,14 @@ const RoleForm = () => {
                                             control={form.control}
                                             readOnly={isViewPage}
                                         />
+                                        <DefaultSelect
+                                            name='roleId'
+                                            label='Role'
+                                            options={rolesForSelect?.roles}
+                                            control={form.control}
+                                            isLoading={isRolesLoading}
+                                            disabled={isViewPage}
+                                        />
                                     </Layout>
                                 </Layout>
                                 {!isViewPage && <FormFooter isSubmitting={isAddUserPending} />}
@@ -115,4 +127,4 @@ const RoleForm = () => {
     )
 }
 
-export default RoleForm
+export default UserForm

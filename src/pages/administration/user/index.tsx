@@ -5,8 +5,9 @@ import { useState } from 'react'
 import { getFormActions } from '@/utils/actions'
 import { useRoleStore } from '@/store/client'
 import Form from './Form'
+import List from './List'
 
-const Role = () => {
+const User = () => {
     const [view, setView] = useState<PageType>('create')
     const resetDatabaseId = useRoleStore((state) => state.reset);
 
@@ -31,8 +32,9 @@ const Role = () => {
             actions={actions}
         >
             {isForm(view) && <Form/>}
+            {view === 'list' && <List togglePage={togglePage} />}
         </Page>
     )
 }
 
-export default Role
+export default User

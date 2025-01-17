@@ -12,5 +12,8 @@ export const userSchema = () => {
       email: z.string().trim().email().min(1, {
         message: "Email is required",
       }),
+      roleId: z.number().min(1, {
+        message: "Role is required",
+      }),
     })
 };
