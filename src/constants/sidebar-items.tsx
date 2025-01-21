@@ -30,6 +30,10 @@ export const data = {
           title: "2FA",
           url: "/mfa",
         },
+        {
+          title: "Change Password",
+          url: "/change-password",
+        },
       ],
     },
     {
