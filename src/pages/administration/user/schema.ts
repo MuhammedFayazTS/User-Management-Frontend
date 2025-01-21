@@ -9,6 +9,7 @@ export const userSchema = () => {
       lastName: z.string().trim().min(1, {
         message: "Last name is required",
       }),
+      image: z.string().trim().optional(),
       email: z.string().trim().email().min(1, {
         message: "Email is required",
       }),

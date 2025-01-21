@@ -16,14 +16,15 @@ import { useAddUser } from '@/store/server/user';
 import { AddOrUpdateUserResponse } from '@/types/user';
 import { DefaultSelect } from '@/components/core/DefaultSelect';
 import { useGetRolesForSelect } from '@/store/server/role';
+import { FileUploadCard } from '@/components/cards/FileUploadCard';
 
 const UserForm = () => {
     const { reset: resetDatabaseId, toggleViewPage, databaseId, isViewPage } = useRoleStore((state) => state);
 
-    const isLoading =false //temperory
+    const isLoading = false //temperory
 
     const { mutate: addUserMutation, isPending: isAddUserPending } = useAddUser();
-    const { data: rolesForSelect, isLoading:isRolesLoading } = useGetRolesForSelect();
+    const { data: rolesForSelect, isLoading: isRolesLoading } = useGetRolesForSelect();
     // const { mutate: updateRoleMutation, isPending: isUpdateRolePending } = useUpdateRole();
     // const { data: roleData, isLoading } = useGetRole(databaseId ?? undefined);
 
@@ -36,7 +37,8 @@ const UserForm = () => {
             firstName: "",
             lastName: "",
             email: "",
-            roleId:"" as unknown as number
+            image:"",
+            roleId: "" as unknown as number
         },
     });
 
@@ -76,7 +78,7 @@ const UserForm = () => {
     const onClickEditButton = () => toggleViewPage(false)
 
     return (
-        <Card className={isLoading ? 'w-[650px]' : 'w-full'}>
+        <Card className={isLoading ? 'w-[650px]' : 'w-fit'}>
             <CardHeader>
                 <CardTitle>
                     {databaseId ? 'Update' : 'Create'} User
@@ -89,7 +91,7 @@ const UserForm = () => {
                         <SkeletonForm rows={3} fieldsPerRow={1} fieldWidth={600} fieldHeight={35} /> :
                         (<Form {...form}>
                             <form onSubmit={form.handleSubmit(onSubmit)} onReset={() => reset()} className="space-y-8">
-                                <Layout stack gap={5}>
+                                <Layout gap={5}>
                                     <Layout stack width={450}>
                                         <DefaultTextInput
                                             name='firstName'
@@ -116,6 +118,14 @@ const UserForm = () => {
                                             control={form.control}
                                             isLoading={isRolesLoading}
                                             disabled={isViewPage}
+                                        />
+                                    </Layout>
+                                    <Layout width={400} className='p-5'>
+                                        <FileUploadCard
+                                            name='image'
+                                            control={form.control}
+                                            readOnly={isViewPage}
+                                            title='User Image'
                                         />
                                     </Layout>
                                 </Layout>
