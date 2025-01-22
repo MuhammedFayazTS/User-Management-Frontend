@@ -3,8 +3,8 @@ import { DefaultQueryParams } from "@/types/common";
 import { AddOrUpdateUserResponse, GetUsersResponse, NewUserPayload } from "@/types/user";
 
 export const useAddUser = () => {
-  return usePost<AddOrUpdateUserResponse, NewUserPayload>(
-    "/users",
+  return usePost<AddOrUpdateUserResponse, NewUserPayload | FormData>(
+    "/users/create-with-temp-password",
     "users"
   );
 };

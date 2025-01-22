@@ -61,8 +61,7 @@ const FileUploadCard = <TFormValues extends FieldValues>({
                                             alt="Product image"
                                             className={`aspect-square w-full rounded-md object-${fit ? "contain" : "cover"}`}
                                             // Show the selected image or fallback to the placeholder
-                                            src={field.value || "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"}
-                                        />
+                                            src={field.value ? URL.createObjectURL(field.value) : "https://upload.wikimedia.org/wikipedia/commons/3/3f/Placeholder_view_vector.svg"}                                        />
                                         {field.value &&
                                             <Layout gap={1} width={"fit"} className="absolute right-1 top-1">
                                                 <Button
@@ -94,11 +93,7 @@ const FileUploadCard = <TFormValues extends FieldValues>({
                                                 onChange={(e) => {
                                                     const file = e.target.files?.[0];
                                                     if (file) {
-                                                        const reader = new FileReader();
-                                                        reader.onloadend = () => {
-                                                            field.onChange(reader.result);
-                                                        };
-                                                        reader.readAsDataURL(file);
+                                                        field.onChange(file)
                                                     }
                                                 }}
                                                 className="hidden"

@@ -37,7 +37,7 @@ const UserForm = () => {
             firstName: "",
             lastName: "",
             email: "",
-            image:"",
+            image: null,
             roleId: "" as unknown as number
         },
     });
@@ -67,8 +67,18 @@ const UserForm = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true)
+
+        const valuesWithoutImage = {...values,image:undefined}
+        const image = values.image
+
+        const formData = new FormData()
+        formData.append("inputParams", JSON.stringify(valuesWithoutImage));
+        if (image) {
+            formData.append("image", image);
+          }
+
         if (!databaseId) {
-            addUserMutation(values, mutationConfig);
+            addUserMutation(formData, mutationConfig);
         } else {
             // updateRoleMutation({ id: databaseId, data: values }, mutationConfig);
         }
