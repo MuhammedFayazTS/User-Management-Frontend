@@ -1,6 +1,11 @@
-import { useGet, usePost } from "@/utils/reactQuery";
+import { useGet, usePost, usePut } from "@/utils/reactQuery";
 import { DefaultQueryParams } from "@/types/common";
-import { AddOrUpdateUserResponse, GetUsersResponse, NewUserPayload } from "@/types/user";
+import {
+  AddOrUpdateUserResponse,
+  GetUserResponse,
+  GetUsersResponse,
+  NewUserPayload,
+} from "@/types/user";
 
 export const useAddUser = () => {
   return usePost<AddOrUpdateUserResponse, NewUserPayload | FormData>(
@@ -17,4 +22,15 @@ export const useGetUsers = (filters?: DefaultQueryParams) => {
     page,
     limit,
   });
+};
+
+export const useGetUser = (id?: number | null) => {
+  return useGet<GetUserResponse>("user", `/users/${id}`, {}, !!id);
+};
+
+export const useUpdateUser = () => {
+  return usePut<AddOrUpdateUserResponse, NewUserPayload | FormData>(
+    "/users",
+    "users"
+  );
 };

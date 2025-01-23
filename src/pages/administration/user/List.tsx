@@ -4,18 +4,18 @@ import { DefaultTableSkeleton } from "@/components/core/table/DefaultTableSkelto
 import { DataTableColumnHeader } from "@/components/core/table/DataTableColumnHeader";
 import { useDataTable } from "@/hooks/use-data-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import {  DataTableFilterField } from "@/types/common";
+import { DataTableFilterField } from "@/types/common";
 import { Actions, IAction } from "@/components/core/table/Actions";
 import { getListActions } from "@/utils/actions";
 import { useSearchParams } from "react-router";
 import { FC, useEffect, useState } from "react";
 import ConfirmDialog, { IConfirmDialog } from "@/components/dialog/ConfirmDialog";
-import { useRoleStore } from "@/store/client";
 import { assertDefined } from "@/utils/common-helper";
 import { MessageCircleWarningIcon } from "lucide-react";
 import { PageType } from "@/layout/PageLayout";
 import { User } from "@/types/user";
 import { useGetUsers } from "@/store/server/user";
+import { useUserStore } from "@/store/client";
 
 interface IListProps {
   togglePage: (view: PageType) => void;
@@ -25,13 +25,13 @@ interface IListProps {
 const filterFields: DataTableFilterField<User>[] = [
   { value: "firstName", placeholder: "Search by first name", label: "FirstName" },
   { value: "lastName", placeholder: "Search by last name", label: "Last Name" },
-  { value: "roleId", placeholder: "Search by role", label: "Role" },
+  // { value: "roleId", placeholder: "Search by role", label: "Role" },
 ];
 
 const UserList: FC<IListProps> = ({ togglePage }) => {
   const [confirmDialog, setConfirmDialog] = useState<IConfirmDialog>()
   const [searchParams] = useSearchParams();
-  const { reset: resetDatabaseId, setDatabaseId, databaseId, toggleViewPage } = useRoleStore((state) => state);
+  const { reset: resetDatabaseId, setDatabaseId, databaseId, toggleViewPage } = useUserStore((state) => state);
 
   const search = searchParams.get("name") || undefined
   const sort = searchParams.get("sort") || undefined;
@@ -112,11 +112,11 @@ const UserList: FC<IListProps> = ({ togglePage }) => {
     {
       accessorKey: "email",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Last Name" />
+        <DataTableColumnHeader column={column} title="Email" />
       ),
     },
     {
-      accessorKey: "role",
+      accessorKey: "role.name",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Role" />
       ),

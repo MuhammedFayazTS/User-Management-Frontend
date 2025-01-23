@@ -5,7 +5,9 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  roleId: number
+  roleId: number;
+  image?: string | File;
+  origin?: "simple" | "google";
 }
 
 export interface NewUserPayload {
@@ -24,4 +26,8 @@ export interface GetUsersResponse extends BaseGetAllApiResponse {
     count: number;
     rows: User[] | [];
   };
+}
+
+export interface GetUserResponse extends BaseApiResponse {
+  user: User;
 }

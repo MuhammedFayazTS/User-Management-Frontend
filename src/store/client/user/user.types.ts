@@ -1,13 +1,13 @@
-export interface RoleState {
+export interface UserState {
     databaseId: number | null;
     isViewPage: boolean;
   }
   
-  export interface RoleActions {
+  export interface UserActions {
     setDatabaseId: (id: number) => void;
     toggleViewPage: (view: boolean) => void;
     reset: () => void;
   }
   
-  export type RoleStore = RoleState & RoleActions;
+  export type UserStore = UserState & UserActions;
   

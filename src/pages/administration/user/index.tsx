@@ -3,18 +3,18 @@ import { getParentModuleBreadcrumb, ParentModules } from '@/utils/breadcrumb-mod
 import { isForm } from '@/utils/common-helper'
 import { useState } from 'react'
 import { getFormActions } from '@/utils/actions'
-import { useRoleStore } from '@/store/client'
+import { useUserStore } from '@/store/client'
 import Form from './Form'
 import List from './List'
 
 const User = () => {
     const [view, setView] = useState<PageType>('create')
-    const resetDatabaseId = useRoleStore((state) => state.reset);
+    const resetDatabaseId = useUserStore((state) => state.reset);
 
     const togglePage = (page: PageType) => {
         setView(page)
 
-        if(page !== 'edit'){
+        if (page !== 'edit') {
             resetDatabaseId()
         }
     }
@@ -24,14 +24,14 @@ const User = () => {
         onCreate: () => togglePage('create'),
         onList: () => togglePage('list'),
     })
-    
+
     return (
         <Page
             title={'User'}
             parentModules={getParentModuleBreadcrumb(ParentModules.ADMINISTRATION)}
             actions={actions}
         >
-            {isForm(view) && <Form/>}
+            {isForm(view) && <Form />}
             {view === 'list' && <List togglePage={togglePage} />}
         </Page>
     )
