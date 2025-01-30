@@ -7,6 +7,10 @@ import {
   NewUserPayload,
 } from "@/types/user";
 
+interface UserQueryParams extends DefaultQueryParams {
+  roleId?: string;
+}
+
 export const useAddUser = () => {
   return usePost<AddOrUpdateUserResponse, NewUserPayload | FormData>(
     "/users/create-with-temp-password",
@@ -14,13 +18,14 @@ export const useAddUser = () => {
   );
 };
 
-export const useGetUsers = (filters?: DefaultQueryParams) => {
-  const { search, sort, page = "1", limit = "10" } = filters || {};
+export const useGetUsers = (filters?: UserQueryParams) => {
+  const { search, sort, page = "1", limit = "10", roleId } = filters || {};
   return useGet<GetUsersResponse>("users", "/users", {
     search,
     sort,
     page,
     limit,
+    roleId,
   });
 };
 

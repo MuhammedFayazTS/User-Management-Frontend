@@ -16,17 +16,12 @@ import { PageType } from "@/layout/PageLayout";
 import { User } from "@/types/user";
 import { useGetUsers } from "@/store/server/user";
 import { useUserStore } from "@/store/client";
+import { useGetRolesForSelect } from "@/store/server/role";
+import { setSelectOptionsForFilter } from "@/utils/data-table";
 
 interface IListProps {
   togglePage: (view: PageType) => void;
 }
-
-// Filter fields
-const filterFields: DataTableFilterField<User>[] = [
-  { value: "firstName", placeholder: "Search by first name", label: "FirstName" },
-  { value: "lastName", placeholder: "Search by last name", label: "Last Name" },
-  // { value: "roleId", placeholder: "Search by role", label: "Role" },
-];
 
 const UserList: FC<IListProps> = ({ togglePage }) => {
   const [confirmDialog, setConfirmDialog] = useState<IConfirmDialog>()
@@ -37,8 +32,10 @@ const UserList: FC<IListProps> = ({ togglePage }) => {
   const sort = searchParams.get("sort") || undefined;
   const page = searchParams.get("page") || '1';
   const limit = searchParams.get("limit") || '10';
+  const roleId = searchParams.get("roleName") || undefined;
 
-  const { data, isLoading } = useGetUsers({ search, sort, page, limit });
+  const { data, isLoading } = useGetUsers({ search, sort, page, limit,roleId });
+  const { data:rolesForSelect } = useGetRolesForSelect();
   // const { mutate } = useDeleteRole();
 
   const onClickView = async (id: number) => {
@@ -100,25 +97,25 @@ const UserList: FC<IListProps> = ({ togglePage }) => {
     {
       accessorKey: "firstName",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="First Name" />
+        <DataTableColumnHeader key={column.id} column={column} title="First Name" />
       ),
     },
     {
       accessorKey: "lastName",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Last Name" />
+        <DataTableColumnHeader key={column.id} column={column} title="Last Name" />
       ),
     },
     {
       accessorKey: "email",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Email" />
+        <DataTableColumnHeader key={column.id} column={column} title="Email" />
       ),
     },
     {
-      accessorKey: "role.name",
+      accessorKey: "roleName",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Role" />
+        <DataTableColumnHeader key={column.id} column={column} title="Role" />
       ),
     },
     {
@@ -126,6 +123,13 @@ const UserList: FC<IListProps> = ({ togglePage }) => {
       cell: ({ row }) => <Actions actions={actions(+row.original.id)} />,
       size: 5
     },
+  ];
+
+  // Filter fields
+  const filterFields: DataTableFilterField<User>[] = [
+    { value: "firstName", placeholder: "Search by first name", label: "FirstName" },
+    { value: "lastName", placeholder: "Search by last name", label: "Last Name" },
+    { value: "roleName", placeholder: "Search by role", label: "Role",options:setSelectOptionsForFilter(rolesForSelect?.roles || [])},
   ];
 
   const { table } = useDataTable({

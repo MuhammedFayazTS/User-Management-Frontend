@@ -110,14 +110,14 @@ export const DefaultSelect = <TFormValues extends FieldValues>({
                             <>
                                 <Select
                                     onValueChange={handleValueChange}
-                                    defaultValue={field.value?.toString()}
+                                    value={field.value ? field.value.toString() : ""}
                                     onOpenChange={() => {
                                         setSearch("");
                                         inputRef.current?.focus();
                                     }}
                                 >
                                     <FormControl>
-                                        <SelectTrigger>
+                                        <SelectTrigger disabled={disabled}>
                                             <SelectValue
                                                 placeholder={placeholder}
                                             />

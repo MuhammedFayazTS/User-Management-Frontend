@@ -1,4 +1,5 @@
 import { BaseApiResponse, BaseGetAllApiResponse } from "./common";
+import { Role } from "./role";
 
 export interface User {
   id: string;
@@ -8,6 +9,8 @@ export interface User {
   roleId: number;
   image?: string | File;
   origin?: "simple" | "google";
+  role?:Role
+  roleName?:Role
 }
 
 export interface NewUserPayload {
