@@ -12,10 +12,10 @@ export const AppLayout = () => {
         <AppSidebar />
         <SidebarInset>
           <HeaderProvider>
-            <main className="w-full">
-              <Header />
-              <Outlet />
-            </main>
+              <main className="w-full md:min-h-full-minus-60">
+                <Header />
+                <Outlet />
+              </main>
           </HeaderProvider>
         </SidebarInset>
       </SidebarProvider>

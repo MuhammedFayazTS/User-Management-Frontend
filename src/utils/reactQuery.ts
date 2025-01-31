@@ -1,12 +1,9 @@
 import API from "@/api/axios-cient";
+import { useErrorStore } from "@/store/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 /**
  * Custom hook to perform GET requests with query parameters.
- * @param key - The query key to uniquely identify the request.
- * @param endpoint - The API endpoint to fetch data from.
- * @param params - Optional query parameters for the GET request.
- * @returns A React Query useQuery hook for the GET request.
  */
 export const useGet = <T>(
   key: string,
@@ -14,20 +11,27 @@ export const useGet = <T>(
   params: Record<string, string | number | undefined> = {},
   enabled: boolean = true
 ) => {
+  const setError = useErrorStore((state) => state.setError);
+  const resetError = useErrorStore((state) => state.resetError);
+
   return useQuery<T>({
     queryKey: [key, params],
-    queryFn: () => {
-      const queryParams = new URLSearchParams();
-      if (params) {
+    queryFn: async () => {
+      try {
+        resetError();
+        const queryParams = new URLSearchParams();
         Object.entries(params).forEach(([key, value]) => {
           if (value !== undefined && value !== null) {
             queryParams.append(key, String(value));
           }
         });
+        const response = await API.get(`${endpoint}?${queryParams.toString()}`);
+        return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        setError(error?.response?.data?.message || "An error occurred.");
+        throw error;
       }
-      return API.get(`${endpoint}?${queryParams.toString()}`).then(
-        (response) => response.data
-      );
     },
     enabled: enabled && !!endpoint,
   });
@@ -35,21 +39,28 @@ export const useGet = <T>(
 
 /**
  * Custom hook to perform POST requests.
- * @param endpoint - The API endpoint to send data to.
- * @param invalidateKey - Optional query key to invalidate after mutation success.
- * @returns A React Query useMutation hook for the POST request.
  */
 export const usePost = <T, U>(endpoint: string, invalidateKey?: string) => {
   const queryClient = useQueryClient();
+  const setError = useErrorStore((state) => state.setError);
+  const resetError = useErrorStore((state) => state.resetError);
+
   return useMutation<T, Error, U>({
-    mutationFn: (data) =>
-      API.post(endpoint, data, {
-        headers: {
-          ...(data instanceof FormData && {
-            "Content-Type": "multipart/form-data",
-          }),
-        },
-      }).then((response) => response.data),
+    mutationFn: async (data) => {
+      try {
+        resetError();
+        const response = await API.post(endpoint, data, {
+          headers: {
+            ...(data instanceof FormData && { "Content-Type": "multipart/form-data" }),
+          },
+        });
+        return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        setError(error?.response?.data?.message || "An error occurred.");
+        throw error;
+      }
+    },
     onSuccess: () => {
       if (invalidateKey) {
         queryClient.invalidateQueries({ queryKey: [invalidateKey] });
@@ -60,21 +71,28 @@ export const usePost = <T, U>(endpoint: string, invalidateKey?: string) => {
 
 /**
  * Custom hook to perform PUT requests.
- * @param endpoint - The API endpoint to update data.
- * @param invalidateKey - Optional query key to invalidate after mutation success.
- * @returns A React Query useMutation hook for the PUT request.
  */
 export const usePut = <T, U>(endpoint: string, invalidateKey?: string) => {
   const queryClient = useQueryClient();
+  const setError = useErrorStore((state) => state.setError);
+  const resetError = useErrorStore((state) => state.resetError);
+
   return useMutation<T, Error, { id: number; data: U }>({
-    mutationFn: ({ id, data }) =>
-      API.put(`${endpoint}/${id}`, data, {
-        headers: {
-          ...(data instanceof FormData && {
-            "Content-Type": "multipart/form-data",
-          }),
-        },
-      }).then((response) => response.data),
+    mutationFn: async ({ id, data }) => {
+      try {
+        resetError();
+        const response = await API.put(`${endpoint}/${id}`, data, {
+          headers: {
+            ...(data instanceof FormData && { "Content-Type": "multipart/form-data" }),
+          },
+        });
+        return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        setError(error?.response?.data?.message || "An error occurred.");
+        throw error;
+      }
+    },
     onSuccess: () => {
       if (invalidateKey) {
         queryClient.invalidateQueries({ queryKey: [invalidateKey] });
@@ -85,15 +103,24 @@ export const usePut = <T, U>(endpoint: string, invalidateKey?: string) => {
 
 /**
  * Custom hook to perform DELETE requests.
- * @param endpoint - The API endpoint to delete data from.
- * @param invalidateKey - Optional query key to invalidate after mutation success.
- * @returns A React Query useMutation hook for the DELETE request.
  */
 export const useDelete = <T>(endpoint: string, invalidateKey?: string) => {
   const queryClient = useQueryClient();
+  const setError = useErrorStore((state) => state.setError);
+  const resetError = useErrorStore((state) => state.resetError);
+
   return useMutation<T, Error, number>({
-    mutationFn: (id) =>
-      API.delete(`${endpoint}/${id}`).then((response) => response.data),
+    mutationFn: async (id) => {
+      try {
+        resetError();
+        const response = await API.delete(`${endpoint}/${id}`);
+        return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        setError(error?.response?.data?.message || "An error occurred.");
+        throw error;
+      }
+    },
     onSuccess: () => {
       if (invalidateKey) {
         queryClient.invalidateQueries({ queryKey: [invalidateKey] });
