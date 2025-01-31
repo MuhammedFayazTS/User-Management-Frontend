@@ -1,5 +1,5 @@
-import { useGet, usePost, usePut } from "@/utils/reactQuery";
-import { DefaultQueryParams } from "@/types/common";
+import { useDelete, useGet, usePost, usePut } from "@/utils/reactQuery";
+import { BaseApiResponse, DefaultQueryParams } from "@/types/common";
 import {
   AddOrUpdateUserResponse,
   GetUserResponse,
@@ -38,4 +38,8 @@ export const useUpdateUser = () => {
     "/users",
     "users"
   );
+};
+
+export const useDeleteUser = () => {
+  return useDelete<BaseApiResponse>(`/users`, "users");
 };

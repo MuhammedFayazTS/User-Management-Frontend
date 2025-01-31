@@ -4,7 +4,7 @@ import { DefaultTableSkeleton } from "@/components/core/table/DefaultTableSkelto
 import { DataTableColumnHeader } from "@/components/core/table/DataTableColumnHeader";
 import { useDataTable } from "@/hooks/use-data-table";
 import type { ColumnDef } from "@tanstack/react-table";
-import { DataTableFilterField } from "@/types/common";
+import { BaseApiResponse, DataTableFilterField } from "@/types/common";
 import { Actions, IAction } from "@/components/core/table/Actions";
 import { getListActions } from "@/utils/actions";
 import { useSearchParams } from "react-router";
@@ -14,10 +14,11 @@ import { assertDefined } from "@/utils/common-helper";
 import { MessageCircleWarningIcon } from "lucide-react";
 import { PageType } from "@/layout/PageLayout";
 import { User } from "@/types/user";
-import { useGetUsers } from "@/store/server/user";
+import { useDeleteUser, useGetUsers } from "@/store/server/user";
 import { useUserStore } from "@/store/client";
 import { useGetRolesForSelect } from "@/store/server/role";
 import { setSelectOptionsForFilter } from "@/utils/data-table";
+import { handleMutationError, handleSuccessResponse } from "@/utils/handleMutationResponse";
 
 interface IListProps {
   togglePage: (view: PageType) => void;
@@ -36,7 +37,7 @@ const UserList: FC<IListProps> = ({ togglePage }) => {
 
   const { data, isLoading } = useGetUsers({ search, sort, page, limit,roleId });
   const { data:rolesForSelect } = useGetRolesForSelect();
-  // const { mutate } = useDeleteRole();
+  const { mutate } = useDeleteUser();
 
   const onClickView = async (id: number) => {
     await setDatabaseId(id);
@@ -53,16 +54,16 @@ const UserList: FC<IListProps> = ({ togglePage }) => {
     await setDatabaseId(id);
   };
 
-  // const mutationConfig = {
-  //   onSuccess: (response: BaseApiResponse) => handleSuccessResponse(true, response?.message),
-  //   onError: (error: unknown) => handleMutationError(error),
-  // };
+  const mutationConfig = {
+    onSuccess: (response: BaseApiResponse) => handleSuccessResponse(true, response?.message),
+    onError: (error: unknown) => handleMutationError(error),
+  };
 
   useEffect(() => {
     if (databaseId) {
       setConfirmDialog({
         isOpen: true,
-        title: "Delete Role",
+        title: "Delete User",
         TitleIcon: MessageCircleWarningIcon,
         onConfirm: onConfirmDelete,
       });
@@ -70,8 +71,8 @@ const UserList: FC<IListProps> = ({ togglePage }) => {
   }, [databaseId]);
 
   const onConfirmDelete = async () => {
-    assertDefined(databaseId, "Role id is not defined", true)
-    // mutate(databaseId, mutationConfig);
+    assertDefined(databaseId, "User id is not defined", true)
+    mutate(databaseId, mutationConfig);
     await resetDatabaseId()
     setConfirmDialog({ ...confirmDialog, isOpen: false } as unknown as IConfirmDialog);
   };
