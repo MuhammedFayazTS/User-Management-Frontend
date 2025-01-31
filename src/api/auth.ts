@@ -16,6 +16,11 @@ type loginType = {
 type verifyEmailType = { code: string };
 type forgotPasswordType = { email: string };
 type resetPasswordType = { verificationCode: string; password: string };
+type changePasswordType = { 
+  oldPassword: string;
+  password: string;
+  confirmPassword: string;
+ };
 
 type SessionType = {
   id: string;
@@ -55,6 +60,9 @@ export const forgotPasswordMutationFn = async (data: forgotPasswordType) =>
 
 export const resetPasswordMutationFn = async (data: resetPasswordType) =>
   await API.post(`/auth/password/reset`, data);
+
+export const changePasswordMutationFn = async (data: changePasswordType) =>
+  await API.post(`/auth/password/change`, data);
 
 export const logoutMutationFn = async () => await API.post(`/auth/logout`);
 

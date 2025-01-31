@@ -6,10 +6,10 @@ export interface Option {
 }
 
 export interface DataTableFilterField<TData> {
-  label: string
-  value: keyof TData
-  placeholder?: string
-  options?: Option[]
+  label: string;
+  value: keyof TData;
+  placeholder?: string;
+  options?: Option[];
 }
 
 export interface DataTableFilterOption<TData> {
@@ -22,9 +22,19 @@ export interface DataTableFilterOption<TData> {
   isMulti?: boolean;
 }
 
-export interface DefaultQueryParams{
+export interface DefaultQueryParams {
   sort?: string;
   search?: string;
   page?: string;
   limit?: string;
-};
+}
+
+export interface BaseApiResponse {
+  message: string;
+}
+
+export interface BaseGetAllApiResponse extends BaseApiResponse {
+  message: string;
+  pageCount: number;
+  itemCount: number;
+}

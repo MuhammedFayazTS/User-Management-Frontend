@@ -13,7 +13,9 @@ import Settings from '@/pages/Settings/Index'
 import Session from '@/pages/account/sessions/Index'
 import VerifyMfa from '@/pages/auth/verify-mfa/Index'
 import MFA from '@/pages/account/mfa/Index'
-import Role from '@/pages/administration/role/role'
+import Role from '@/pages/administration/role'
+import User from '@/pages/administration/user'
+import ChangePassword from '@/pages/auth/change-password/Index'
 
 const AppRoutes = () => {
     return (
@@ -33,11 +35,13 @@ const AppRoutes = () => {
             {/* private routes */}
             <Route element={<AuthRoute />}>
                 <Route element={<AppLayout />}>
-                    <Route path="home" element={<Home/>} />
-                    <Route path="settings" element={<Settings/>} />
-                    <Route path="sessions" element={<Session/>} />
-                    <Route path="mfa" element={<MFA/>} />
-                    <Route path="admin/role" element={<Role/>} />
+                    <Route path="home" element={<Home />} />
+                    <Route path="settings" element={<Settings />} />
+                    <Route path="sessions" element={<Session />} />
+                    <Route path="mfa" element={<MFA />} />
+                    <Route path="admin/role" element={<Role />} />
+                    <Route path="admin/user" element={<User />} />
+                    <Route path="change-password" element={<ChangePassword />} />
                 </Route>
             </Route>
         </Routes>

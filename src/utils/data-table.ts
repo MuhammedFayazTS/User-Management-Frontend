@@ -1,15 +1,16 @@
-import { type Column } from "@tanstack/react-table"
+import { SelectOption } from "@/components/core/DefaultSelect";
+import { type Column } from "@tanstack/react-table";
 
 export function getCommonPinningStyles<TData>({
   column,
 }: {
-  column: Column<TData>
+  column: Column<TData>;
 }): React.CSSProperties {
-  const isPinned = column.getIsPinned()
+  const isPinned = column.getIsPinned();
   const isLastLeftPinnedColumn =
-    isPinned === "left" && column.getIsLastColumn("left")
+    isPinned === "left" && column.getIsLastColumn("left");
   const isFirstRightPinnedColumn =
-    isPinned === "right" && column.getIsFirstColumn("right")
+    isPinned === "right" && column.getIsFirstColumn("right");
 
   return {
     boxShadow: isLastLeftPinnedColumn
@@ -24,5 +25,15 @@ export function getCommonPinningStyles<TData>({
     background: isPinned ? "hsl(var(--background))" : undefined,
     width: column.getSize(),
     zIndex: isPinned ? 1 : 0,
-  }
+  };
+}
+
+export function setSelectOptionsForFilter(options: SelectOption[] | []) {
+  const refinedOptions = options?.map((option) => {
+    return {
+      label: option.label,
+      value: option.value.toString(),
+    };
+  });
+  return refinedOptions;
 }

@@ -11,6 +11,10 @@ export const data = {
           title: "Role",
           url: "/admin/role",
         },
+        {
+          title: "User",
+          url: "/admin/user",
+        },
       ],
     },
     {
@@ -25,6 +29,10 @@ export const data = {
         {
           title: "2FA",
           url: "/mfa",
+        },
+        {
+          title: "Change Password",
+          url: "/change-password",
         },
       ],
     },

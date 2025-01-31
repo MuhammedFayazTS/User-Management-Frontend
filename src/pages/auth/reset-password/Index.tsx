@@ -4,14 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
+    Form
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 import { resetPasswordMutationFn } from "@/api/auth";
@@ -106,26 +100,6 @@ export default function ResetPassword() {
                                 onSubmit={form.handleSubmit(onSubmit)}
                             >
                                 <div className="mb-0">
-                                    <FormField
-                                        control={form.control}
-                                        name="password"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel className="dark:text-[#f1f7feb5] text-sm">
-                                                    New password
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        type="password"
-                                                        autoComplete="off"
-                                                        placeholder="Enter your password"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
                                     <DefaultTextInput
                                         control={form.control}
                                         name="password"

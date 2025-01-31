@@ -1,6 +1,8 @@
 import { toast } from "@/hooks/use-toast";
 import { PageType } from "@/layout/PageLayout";
 
+export const server_url = import.meta.env.VITE_SERVER_URL
+
 export const isForm = (page: PageType) => {
   if (page !== "create" && page !== "edit") {
     return false;

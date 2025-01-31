@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowRight, Loader } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,11 @@ import DefaultTextInput from "@/components/core/DefaultTextInput";
 
 export default function Login() {
     const navigate = useNavigate();
+    
+    const [params] = useSearchParams();
+    const tempPass = params.get("tempPass");
+    const email = params.get("email");
+
     const { mutate, isPending } = useMutation({
         mutationFn: loginMutationFn,
     });
@@ -27,8 +32,8 @@ export default function Login() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "",
-            password: "",
+            email: email ||"",
+            password: tempPass || "",
         },
     });
 
