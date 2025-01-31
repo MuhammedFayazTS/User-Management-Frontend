@@ -16,35 +16,43 @@ import MFA from '@/pages/account/mfa/Index'
 import Role from '@/pages/administration/role'
 import User from '@/pages/administration/user'
 import ChangePassword from '@/pages/auth/change-password/Index'
+import ErrorBoundary from '@/components/error/ErrorBoundary'
+import { Error404 } from '@/components/error/pages/Error404'
+import { Error403 } from '@/components/error/pages/Error403'
 
 const AppRoutes = () => {
     return (
-        <Routes>
-            {/* public routes */}
-            <Route element={<PublicRoute />}>
-                <Route element={<BaseLayout />}>
-                    <Route path="" element={<Login />} />
-                    <Route path="signup" element={<Register />} />
-                    <Route path="confirm-account" element={<ConfirmAccount />} />
-                    <Route path="forgot-password" element={<ForgotPassword />} />
-                    <Route path="reset-password" element={<ResetPassword />} />
-                    <Route path="verify-mfa" element={<VerifyMfa />} />
+        <ErrorBoundary>
+            <Routes>
+                {/* Public routes */}
+                <Route element={<PublicRoute />}>
+                    <Route element={<BaseLayout />}>
+                        <Route path="" element={<Login />} />
+                        <Route path="signup" element={<Register />} />
+                        <Route path="confirm-account" element={<ConfirmAccount />} />
+                        <Route path="forgot-password" element={<ForgotPassword />} />
+                        <Route path="reset-password" element={<ResetPassword />} />
+                        <Route path="verify-mfa" element={<VerifyMfa />} />
+                        <Route path="*" element={<Error404 />} />
+                    </Route>
                 </Route>
-            </Route>
 
-            {/* private routes */}
-            <Route element={<AuthRoute />}>
-                <Route element={<AppLayout />}>
-                    <Route path="home" element={<Home />} />
-                    <Route path="settings" element={<Settings />} />
-                    <Route path="sessions" element={<Session />} />
-                    <Route path="mfa" element={<MFA />} />
-                    <Route path="admin/role" element={<Role />} />
-                    <Route path="admin/user" element={<User />} />
-                    <Route path="change-password" element={<ChangePassword />} />
+                {/* Private routes */}
+                <Route element={<AuthRoute />}>
+                    <Route element={<AppLayout />}>
+                        <Route path="home" element={<Home />} />
+                        <Route path="settings" element={<Settings />} />
+                        <Route path="sessions" element={<Session />} />
+                        <Route path="mfa" element={<MFA />} />
+                        <Route path="admin/role" element={<Role />} />
+                        <Route path="admin/user" element={<User />} />
+                        <Route path="change-password" element={<ChangePassword />} />
+                        <Route path="restricted" element={<Error403 />} />
+                        <Route path="*" element={<Error404 />} />
+                    </Route>
                 </Route>
-            </Route>
-        </Routes>
+            </Routes>
+        </ErrorBoundary>
     )
 }
 
