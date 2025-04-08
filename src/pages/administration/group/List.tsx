@@ -17,6 +17,7 @@ import { PageType } from "@/layout/PageLayout";
 import { Group } from "@/types/group";
 import { useGroupStore } from "@/store/client";
 import { useDeleteGroup, useGetGroups } from "@/store/server/group";
+import PermissionBadge from "@/components/PermissionBadge";
 
 interface IListProps {
   togglePage: (view: PageType) => void;
@@ -108,6 +109,10 @@ const GroupList: FC<IListProps> = ({ togglePage }) => {
         <DataTableColumnHeader column={column} title="Description" />
       ),
     },
+    {
+          accessorKey: "Roles",
+          cell: ({ row }) => <PermissionBadge maxWidth={300} permissions={row.original.roles} />
+        },
     {
       accessorKey: "actions",
       cell: ({ row }) => <Actions actions={actions(+row.original.id)} />,
