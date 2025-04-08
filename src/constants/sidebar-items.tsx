@@ -15,6 +15,10 @@ export const data = {
           title: "User",
           url: "/admin/user",
         },
+        {
+          title: "Group",
+          url: "/admin/group",
+        },
       ],
     },
     {

@@ -15,6 +15,7 @@ import VerifyMfa from '@/pages/auth/verify-mfa/Index'
 import MFA from '@/pages/account/mfa/Index'
 import Role from '@/pages/administration/role'
 import User from '@/pages/administration/user'
+import Group from '@/pages/administration/group'
 import ChangePassword from '@/pages/auth/change-password/Index'
 import ErrorBoundary from '@/components/error/ErrorBoundary'
 import { Error404 } from '@/components/error/pages/Error404'
@@ -46,6 +47,7 @@ const AppRoutes = () => {
                         <Route path="mfa" element={<MFA />} />
                         <Route path="admin/role" element={<Role />} />
                         <Route path="admin/user" element={<User />} />
+                        <Route path="admin/group" element={<Group />} />
                         <Route path="change-password" element={<ChangePassword />} />
                         <Route path="restricted" element={<Error403 />} />
                         <Route path="*" element={<Error404 />} />
