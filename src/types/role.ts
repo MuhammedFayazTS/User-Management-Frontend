@@ -3,7 +3,7 @@ import { BaseApiResponse, BaseGetAllApiResponse } from "./common";
 import { Permission } from "./permission";
 
 export interface Role {
-  id: string;
+  id: number;
   name: string;
   description?: string;
   permissions: Permission[];

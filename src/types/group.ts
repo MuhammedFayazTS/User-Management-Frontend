@@ -1,21 +1,21 @@
 import { SelectOption } from "@/components/core/DefaultSelect";
 import { BaseApiResponse, BaseGetAllApiResponse } from "./common";
-// import { User } from "./user";
-// import { Role } from "./role";
+import { User } from "./user";
+import { Role } from "./role";
 
 export interface Group {
   id: string;
   name: string;
   description?: string;
-//   users: User[];
-//   roles: Role[];
+  users: User[];
+  roles: Role[];
 }
 
 export interface NewGroup {
   name: string;
   description?: string;
-//   users?: User[];
-//   roles?: Role[];
+  users?: User[];
+  roles?: Role[];
 }
 
 export interface GetGroup {

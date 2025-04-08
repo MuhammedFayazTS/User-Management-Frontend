@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DefaultTextInput from '@/components/core/DefaultTextInput'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,6 +16,12 @@ import EditButton from '@/components/buttons/EditButton';
 import { BaseApiResponse } from '@/types/common';
 import { useAddGroup, useGetGroup, useUpdateGroup } from '@/store/server/group';
 import { groupSchema } from './schema';
+import { useGetRoles } from '@/store/server/role';
+import { Role } from '@/types/role';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useGetUsers } from '@/store/server/user';
+import { User } from '@/types/user';
+import { SelectableList } from '@/components/SelectableList';
 
 const defaultValues = {
     name: "",
@@ -23,11 +29,15 @@ const defaultValues = {
 }
 
 const GroupForm = () => {
+    const [selectedRoles, setSelectedRoles] = useState<Role[]>([])
+    const [selectedUsers, setSelectedUsers] = useState<User[]>([])
     const { reset: resetDatabaseId, toggleViewPage, databaseId, isViewPage } = useGroupStore((state) => state);
 
-    const { mutate: addRoleMutation, isPending: isAddGroupPending } = useAddGroup();
-    const { mutate: updateRoleMutation, isPending: isUpdateGroupPending } = useUpdateGroup();
+    const { mutate: addGroupMutation, isPending: isAddGroupPending } = useAddGroup();
+    const { mutate: updateGroupMutation, isPending: isUpdateGroupPending } = useUpdateGroup();
 
+    const { data: roleData, isLoading: isRolesLoading } = useGetRoles({ search: undefined });
+    const { data: userData, isLoading: isUsersLoading } = useGetUsers({ search: undefined });
     const { data: groupData, isLoading } = useGetGroup(databaseId ?? undefined);
 
     const { setIsLoading } = useHeaderContext()
@@ -43,8 +53,10 @@ const GroupForm = () => {
     useEffect(() => {
         if (!isLoading && groupData?.group) {
             reset(groupData.group);
+            setSelectedRoles(groupData.group?.roles)
+            setSelectedUsers(groupData.group?.users)
         }
-        if(!databaseId){
+        if (!databaseId) {
             reset(defaultValues)
         }
     }, [isLoading, groupData, reset, databaseId]);
@@ -65,16 +77,52 @@ const GroupForm = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true)
-        const updatedValues = { ...values}
+        const updatedValues = { ...values, roles: selectedRoles, users: selectedUsers }
         if (!databaseId) {
-            addRoleMutation(updatedValues, mutationConfig);
+            addGroupMutation(updatedValues, mutationConfig);
         } else {
-            updateRoleMutation({ id: databaseId, data: updatedValues }, mutationConfig);
+            updateGroupMutation({ id: databaseId, data: updatedValues }, mutationConfig);
         }
         await resetDatabaseId()
     };
 
     const onClickEditButton = () => toggleViewPage(false)
+
+    const isRoleSelected = (roleId: number) => {
+        return selectedRoles.some(
+            (role) => role.id === roleId
+        );
+    };
+
+    const isUserSelected = (userId: number) => {
+        return selectedUsers.some(
+            (user) => user.id === userId
+        );
+    };
+
+    const handleRoleChange = (role: Role) => {
+        if (!setSelectedRoles) return;
+
+        const updatedRoles = isRoleSelected(role.id)
+            ? selectedRoles.filter(
+                (r) => r.id !== role.id
+            )
+            : [...selectedRoles, role];
+
+        setSelectedRoles(updatedRoles);
+    };
+
+    const handleUserChange = (user: User) => {
+        if (!setSelectedUsers) return;
+
+        const updatedUsers = isUserSelected(user.id)
+            ? selectedUsers.filter(
+                (r) => r.id !== user.id
+            )
+            : [...selectedUsers, user];
+
+        setSelectedUsers(updatedUsers);
+    };
 
     return (
         <Card className={isLoading ? 'w-[650px]' : 'w-full'}>
@@ -104,6 +152,33 @@ const GroupForm = () => {
                                             control={form.control}
                                             readOnly={isViewPage}
                                         />
+                                    </Layout>
+                                    <Layout>
+                                        <Tabs defaultValue="roles" className="w-full">
+                                            <TabsList className='w-full flex'>
+                                                <TabsTrigger value="roles" className='flex-1'>Roles</TabsTrigger>
+                                                <TabsTrigger value="users" className='flex-1'>Users</TabsTrigger>
+                                            </TabsList>
+                                            <TabsContent value="roles">
+                                                <SelectableList
+                                                    isLoading={isRolesLoading}
+                                                    data={roleData?.roles.rows || []}
+                                                    isSelected={isRoleSelected}
+                                                    handleChange={handleRoleChange}
+                                                    isViewPage={isViewPage}
+                                                />
+                                            </TabsContent>
+
+                                            <TabsContent value="users">
+                                                <SelectableList
+                                                    isLoading={isUsersLoading}
+                                                    data={userData?.users.rows || []}
+                                                    isSelected={isUserSelected}
+                                                    handleChange={handleUserChange}
+                                                    isViewPage={isViewPage}
+                                                />
+                                            </TabsContent>
+                                        </Tabs>
                                     </Layout>
                                 </Layout>
                                 {!isViewPage && <FormFooter isSubmitting={isAddGroupPending || isUpdateGroupPending} />}
