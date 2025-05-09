@@ -19,6 +19,10 @@ export const data = {
           title: "Group",
           url: "/admin/group",
         },
+        {
+          title: "Branch",
+          url: "/admin/branch",
+        },
       ],
     },
     {
