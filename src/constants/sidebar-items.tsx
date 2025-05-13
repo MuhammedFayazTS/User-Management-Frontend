@@ -23,6 +23,10 @@ export const data = {
           title: "Branch",
           url: "/admin/branch",
         },
+        {
+          title: "Room Status",
+          url: "/admin/room-status",
+        },
       ],
     },
     {

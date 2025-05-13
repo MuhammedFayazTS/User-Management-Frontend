@@ -21,6 +21,7 @@ import ErrorBoundary from '@/components/error/ErrorBoundary'
 import { Error404 } from '@/components/error/pages/Error404'
 import { Error403 } from '@/components/error/pages/Error403'
 import Branch from '@/pages/administration/branch'
+import RoomStatus from '@/pages/administration/room-status'
 
 const AppRoutes = () => {
     return (
@@ -50,6 +51,7 @@ const AppRoutes = () => {
                         <Route path="admin/user" element={<User />} />
                         <Route path="admin/group" element={<Group />} />
                         <Route path="admin/branch" element={<Branch />} />
+                        <Route path="admin/room-status" element={<RoomStatus />} />
                         <Route path="change-password" element={<ChangePassword />} />
                         <Route path="restricted" element={<Error403 />} />
                         <Route path="*" element={<Error404 />} />

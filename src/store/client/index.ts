@@ -10,5 +10,8 @@ export * from "./group/group.types";
 export { default as useBranchStore } from "./branch/branch.store";
 export * from "./branch/branch.types";
 
+export { default as useRoomStatusStore } from "./room-status/room-status.store";
+export * from "./room-status/room-status.types";
+
 export { default as useErrorStore } from "./error/error.store";
 export * from "./error/error.types";
