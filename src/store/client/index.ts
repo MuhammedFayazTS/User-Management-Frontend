@@ -16,5 +16,8 @@ export * from "./room-status/room-status.types";
 export { default as useRoomTypeStore } from "./room-type/room-type.store";
 export * from "./room-type/room-type.types";
 
+export { default as useRoomStore } from "./room/room.store";
+export * from "./room/room.types";
+
 export { default as useErrorStore } from "./error/error.store";
 export * from "./error/error.types";

@@ -31,6 +31,10 @@ export const data = {
           title: "Room Types",
           url: "/admin/room-type",
         },
+        {
+          title: "Room",
+          url: "/admin/room",
+        },
       ],
     },
     {

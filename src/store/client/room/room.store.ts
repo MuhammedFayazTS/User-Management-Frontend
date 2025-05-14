@@ -1,7 +1,7 @@
 import { create } from 'zustand';
-import { RoomTypeStore } from './room-type.types';
+import { RoomStore } from './room.types';
 
-const useRoomTypeStore = create<RoomTypeStore>((set) => ({
+const useRoomStore = create<RoomStore>((set) => ({
   databaseId: null,
   isViewPage: false,
   setDatabaseId: (id: number) => set(() => ({ databaseId: id })),
@@ -9,4 +9,4 @@ const useRoomTypeStore = create<RoomTypeStore>((set) => ({
   reset: () => set(() => ({ databaseId: null,isViewPage:false })),
 }));
 
-export default useRoomTypeStore;
+export default useRoomStore;

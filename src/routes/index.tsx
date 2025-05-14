@@ -23,6 +23,7 @@ import { Error403 } from '@/components/error/pages/Error403'
 import Branch from '@/pages/administration/branch'
 import RoomStatus from '@/pages/administration/room-status'
 import RoomType from '@/pages/administration/room-type'
+import Room from '@/pages/administration/room'
 
 const AppRoutes = () => {
     return (
@@ -54,6 +55,7 @@ const AppRoutes = () => {
                         <Route path="admin/branch" element={<Branch />} />
                         <Route path="admin/room-status" element={<RoomStatus />} />
                         <Route path="admin/room-type" element={<RoomType />} />
+                        <Route path="admin/room" element={<Room />} />
                         <Route path="change-password" element={<ChangePassword />} />
                         <Route path="restricted" element={<Error403 />} />
                         <Route path="*" element={<Error404 />} />
