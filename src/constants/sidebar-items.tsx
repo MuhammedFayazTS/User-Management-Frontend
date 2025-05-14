@@ -27,6 +27,10 @@ export const data = {
           title: "Room Status",
           url: "/admin/room-status",
         },
+        {
+          title: "Room Types",
+          url: "/admin/room-type",
+        },
       ],
     },
     {

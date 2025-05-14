@@ -1,37 +1,42 @@
 import { useEffect } from 'react';
 import DefaultTextInput from '@/components/core/DefaultTextInput'
-import { roomStatusSchema } from './schema';
+import { roomTypeSchema } from './schema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
-import { useAddRoomStatus, useGetRoomStatus, useUpdateRoomStatus } from '@/store/server/room-status';
+import { useAddRoomType, useGetRoomType, useUpdateRoomType } from '@/store/server/room-type';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Layout from '@/components/core/Layout';
 import DefaultTextArea from '@/components/core/DefaultTextArea';
 import FormFooter from '@/components/core/FormFooter';
 import { useHeaderContext } from '@/context/header-provider';
-import { useRoomStatusStore } from '@/store/client';
+import { useRoomTypeStore } from '@/store/client';
 import SkeletonForm from '@/components/loaders/SkeletonForm';
 import { handleMutationError, handleSuccessResponse } from '@/utils/handleMutationResponse';
 import EditButton from '@/components/buttons/EditButton';
 import { BaseApiResponse } from '@/types/common';
+import { useGetBranchesForSelect } from '@/store/server/branch';
+import { DefaultSelect } from '@/components/core/DefaultSelect';
 
 const defaultValues = {
     name: "",
     description: "",
+    price: undefined,
+    branchId: undefined
 }
 
-const RoomStatusForm = () => {
-    const { reset: resetDatabaseId, toggleViewPage, databaseId, isViewPage } = useRoomStatusStore((state) => state);
+const RoomTypeForm = () => {
+    const { reset: resetDatabaseId, toggleViewPage, databaseId, isViewPage } = useRoomTypeStore((state) => state);
 
-    const { mutate: addRoomStatusMutation, isPending: isAddRoomStatusPending } = useAddRoomStatus();
-    const { mutate: updateRoomStatusMutation, isPending: isUpdateRoomStatusPending } = useUpdateRoomStatus();
+    const { mutate: addRoomTypeMutation, isPending: isAddRoomTypePending } = useAddRoomType();
+    const { mutate: updateRoomTypeMutation, isPending: isUpdateRoomTypePending } = useUpdateRoomType();
 
-    const { data: roomStatusData, isLoading } = useGetRoomStatus(databaseId ?? undefined);
+    const { data: roomTypeData, isLoading } = useGetRoomType(databaseId ?? undefined);
+    const { data: branchesData, isLoading: isBranchesLoading } = useGetBranchesForSelect();
 
     const { setIsLoading } = useHeaderContext()
-    const formSchema = roomStatusSchema()
+    const formSchema = roomTypeSchema()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -41,13 +46,13 @@ const RoomStatusForm = () => {
     const { reset } = form;
 
     useEffect(() => {
-        if (!isLoading && roomStatusData?.roomStatus) {
-            reset(roomStatusData.roomStatus);
+        if (!isLoading && roomTypeData?.roomType) {
+            reset(roomTypeData.roomType);
         }
         if (!databaseId) {
             reset(defaultValues)
         }
-    }, [isLoading, roomStatusData, reset, databaseId]);
+    }, [isLoading, roomTypeData, reset, databaseId]);
 
     const successCallback = () => {
         reset();
@@ -67,9 +72,9 @@ const RoomStatusForm = () => {
         setIsLoading(true)
         const updatedValues = { ...values }
         if (!databaseId) {
-            addRoomStatusMutation(updatedValues, mutationConfig);
+            addRoomTypeMutation(updatedValues, mutationConfig);
         } else {
-            updateRoomStatusMutation({ id: databaseId, data: updatedValues }, mutationConfig);
+            updateRoomTypeMutation({ id: databaseId, data: updatedValues }, mutationConfig);
         }
         await resetDatabaseId()
     };
@@ -80,7 +85,7 @@ const RoomStatusForm = () => {
         <Card className={isLoading ? 'w-[650px]' : 'w-full'}>
             <CardHeader>
                 <CardTitle>
-                    {databaseId ? 'Update' : 'Create'} Room Status
+                    {databaseId ? 'Update' : 'Create'} Room Type
                     {isViewPage && <EditButton customClass='ml-3' onClick={onClickEditButton} />}
                 </CardTitle>
             </CardHeader>
@@ -98,6 +103,21 @@ const RoomStatusForm = () => {
                                             control={form.control}
                                             readOnly={isViewPage}
                                         />
+                                        <DefaultSelect
+                                            name='branchId'
+                                            label='Branch'
+                                            isLoading={isBranchesLoading}
+                                            options={branchesData?.branches}
+                                            control={form.control}
+                                            disabled={isViewPage}
+                                        />
+                                        <DefaultTextInput
+                                            name='price'
+                                            label='Price'
+                                            type='number'
+                                            control={form.control}
+                                            readOnly={isViewPage}
+                                        />
                                         <DefaultTextArea
                                             name='description'
                                             label='Description'
@@ -106,7 +126,7 @@ const RoomStatusForm = () => {
                                         />
                                     </Layout>
                                 </Layout>
-                                {!isViewPage && <FormFooter isSubmitting={isAddRoomStatusPending || isUpdateRoomStatusPending} />}
+                                {!isViewPage && <FormFooter isSubmitting={isAddRoomTypePending || isUpdateRoomTypePending} />}
                             </form>
                         </Form>)}
             </CardContent>
@@ -114,4 +134,4 @@ const RoomStatusForm = () => {
     )
 }
 
-export default RoomStatusForm
+export default RoomTypeForm
