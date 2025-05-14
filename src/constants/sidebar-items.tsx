@@ -35,6 +35,10 @@ export const data = {
           title: "Room",
           url: "/admin/room",
         },
+        {
+          title: "Customer",
+          url: "/admin/customer",
+        },
       ],
     },
     {
