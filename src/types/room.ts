@@ -10,9 +10,9 @@ export interface Room {
   typeId: number;
   statusId: number;
   branchId: number;
-  status?:RoomStatus,
-  Branch?:Branch,
-  type?:RoomType,
+  status?: RoomStatus;
+  Branch?: Branch;
+  type?: RoomType;
 }
 
 export interface NewRoom {
@@ -39,4 +39,13 @@ export interface GetRoomResponse extends BaseApiResponse {
 
 export interface GetRoomsForSelectResponse extends BaseApiResponse {
   rooms: SelectOption[];
+}
+
+export interface GetRoomsForSelectByStatusResponse extends BaseApiResponse {
+  rooms: {
+    booked: SelectOption[] | [];
+    "checked-in": SelectOption[] | [];
+    "checked-out": SelectOption[] | [];
+    "cancelled": SelectOption[] | [];
+  };
 }

@@ -39,6 +39,10 @@ export const data = {
           title: "Customer",
           url: "/admin/customer",
         },
+        {
+          title: "Booking",
+          url: "/booking/create",
+        },
       ],
     },
     {

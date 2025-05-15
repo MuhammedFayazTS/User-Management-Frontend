@@ -1,5 +1,5 @@
 import { BaseApiResponse, DefaultQueryParams } from "@/types/common";
-import { GetRoomResponse, GetRoomsForSelectResponse, GetRoomsResponse, NewRoom } from "@/types/room";
+import { GetRoomResponse, GetRoomsForSelectByStatusResponse, GetRoomsForSelectResponse, GetRoomsResponse, NewRoom } from "@/types/room";
 import { useDelete, useGet, usePost, usePut } from "@/utils/reactQuery";
 
 export const useGetRooms = (filters?: DefaultQueryParams) => {
@@ -18,6 +18,10 @@ export const useGetRoom = (id?: number | null) => {
 
 export const useGetRoomsForSelect = () => {
   return useGet<GetRoomsForSelectResponse>("roomsForSelect", `/rooms/select`);
+};
+
+export const useGetRoomsByBookingStatus = () => {
+  return useGet<GetRoomsForSelectByStatusResponse>("roomsForSelectByStatus", `/rooms/select/status`);
 };
 
 export const useAddRoom = () => {
