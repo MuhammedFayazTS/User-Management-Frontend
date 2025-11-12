@@ -22,5 +22,8 @@ export * from "./room/room.types";
 export { default as useCustomerStore } from "./customer/customer.store";
 export * from "./customer/customer.types";
 
+export { default as useBookingStore } from "./booking/booking.store";
+export * from "./booking/booking.types";
+
 export { default as useErrorStore } from "./error/error.store";
 export * from "./error/error.types";

@@ -68,7 +68,7 @@ const AppRoutes = () => {
                             <Route path="create" element={<BookingForm />} >
                                 <Route index element={<BookingType />} />
                                 <Route path=":type" element={<RoomSelection />} />
-                                <Route path=":type/:room" element={<BookingDetails />} />
+                                <Route path=":type/:roomId" element={<BookingDetails />} />
                             </Route>
                             <Route path="list" element={<BookingList />} />
                         </Route>

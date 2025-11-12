@@ -13,6 +13,8 @@ interface IDefaultTextInputProps<TFormValues extends FieldValues> {
     autoComplete?: 'off' | 'on'
     width?: number
     readOnly?: boolean
+    inputClassName?: string
+    onChangeCallback?: (value: string) => void
 }
 
 const DefaultTextInput = <TFormValues extends FieldValues>({
@@ -24,6 +26,8 @@ const DefaultTextInput = <TFormValues extends FieldValues>({
     autoComplete,
     width,
     readOnly = false,
+    inputClassName,
+    onChangeCallback
 }: IDefaultTextInputProps<TFormValues>) => {
     return (
         <FormField
@@ -33,7 +37,14 @@ const DefaultTextInput = <TFormValues extends FieldValues>({
                 <FormItem style={{ width: width || '100%' }}>
                     <FormLabel className="dark:text-[#f1f7feb5] text-sm">{label}</FormLabel>
                     <FormControl>
-                        <Input placeholder={placeholder} type={type} autoComplete={autoComplete} readOnly={readOnly} {...field} />
+                        <Input
+                        className={inputClassName}
+                            placeholder={placeholder} type={type} autoComplete={autoComplete} readOnly={readOnly} {...field}
+                            onChange={(e) => {
+                                field.onChange(e);
+                                onChangeCallback?.(e.target.value);
+                            }} />
+
                     </FormControl>
                     <FormMessage />
                 </FormItem>

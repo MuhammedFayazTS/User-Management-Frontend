@@ -1,5 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router";
+import booking from "@/assets/icons/booking/booking.png"
+import checkIn from "@/assets/icons/booking/check-in-desk.png"
+import checkOut from "@/assets/icons/booking/check-out.png"
+import cancel from "@/assets/icons/booking/cancelled.png"
 
 interface BookingTypeCard {
   name: string
@@ -10,23 +14,23 @@ interface BookingTypeCard {
 const BookingType = () => {
   const bookingTypes = [
     {
-      name: "Pre-Book",
-      image: "https://thumbs.dreamstime.com/z/booking-icon-vector-illustration-isolated-white-136001216.jpg",
+      name: "Book",
+      image: booking,
       toPath: "/booking/create/booked"
     },
     {
       name: "Check IN",
-      image: "https://thumbs.dreamstime.com/z/booking-icon-vector-illustration-isolated-white-136001216.jpg",
+      image: checkIn,
       toPath: "/booking/create/checked-in"
     },
     {
       name: "Check Out",
-      image: "https://thumbs.dreamstime.com/z/booking-icon-vector-illustration-isolated-white-136001216.jpg",
+      image: checkOut,
       toPath: "/booking/create/checked-out"
     },
     {
       name: "Cancel",
-      image: "https://thumbs.dreamstime.com/z/booking-icon-vector-illustration-isolated-white-136001216.jpg",
+      image: cancel,
       toPath: "/booking/create/cancelled"
     },
   ]
@@ -50,13 +54,13 @@ const BookingTypeCard = ({ name, image, toPath }: BookingTypeCard) => {
   const navigate = useNavigate()
   const onClick = () => navigate(toPath)
   return (
-    <Card onClick={onClick} className="w-40 aspect-[4/5] shadow-md cursor-pointer hover:border-sky-500 duration-300 transition-all ease-in-out">
+    <Card onClick={onClick} className="w-36 aspect-[4/5] shadow-md cursor-pointer hover:border-sky-500 duration-300 transition-all ease-in-out">
       <CardContent className="flex flex-col justify-center items-center h-full p-3">
         <img
           src={image}
           alt={name + " image"}
           loading="lazy"
-          className="w-full aspect-square object-cover"
+          className="w-full aspect-square object-cover p-4"
         />
         <h4 className="text-lg font-semibold">{name}</h4>
       </CardContent>
