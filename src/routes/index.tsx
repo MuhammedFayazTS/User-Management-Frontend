@@ -20,6 +20,17 @@ import ChangePassword from '@/pages/auth/change-password/Index'
 import ErrorBoundary from '@/components/error/ErrorBoundary'
 import { Error404 } from '@/components/error/pages/Error404'
 import { Error403 } from '@/components/error/pages/Error403'
+import Branch from '@/pages/administration/branch'
+import RoomStatus from '@/pages/administration/room-status'
+import RoomType from '@/pages/administration/room-type'
+import Room from '@/pages/administration/room'
+import Customer from '@/pages/administration/customer'
+import BookingForm from '@/pages/operations/booking/form'
+import BookingType from '@/pages/operations/booking/form/BookingType'
+import RoomSelection from '@/pages/operations/booking/form/RoomSelection'
+import BookingDetails from '@/pages/operations/booking/form/BookingDetails'
+import BookingList from '@/pages/operations/booking/List'
+import Booking from '@/pages/operations/booking'
 
 const AppRoutes = () => {
     return (
@@ -48,6 +59,19 @@ const AppRoutes = () => {
                         <Route path="admin/role" element={<Role />} />
                         <Route path="admin/user" element={<User />} />
                         <Route path="admin/group" element={<Group />} />
+                        <Route path="admin/branch" element={<Branch />} />
+                        <Route path="admin/room-status" element={<RoomStatus />} />
+                        <Route path="admin/room-type" element={<RoomType />} />
+                        <Route path="admin/room" element={<Room />} />
+                        <Route path="admin/customer" element={<Customer />} />
+                        <Route path="booking" element={<Booking />} >
+                            <Route path="create" element={<BookingForm />} >
+                                <Route index element={<BookingType />} />
+                                <Route path=":type" element={<RoomSelection />} />
+                                <Route path=":type/:roomId" element={<BookingDetails />} />
+                            </Route>
+                            <Route path="list" element={<BookingList />} />
+                        </Route>
                         <Route path="change-password" element={<ChangePassword />} />
                         <Route path="restricted" element={<Error403 />} />
                         <Route path="*" element={<Error404 />} />

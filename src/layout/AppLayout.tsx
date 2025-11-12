@@ -12,7 +12,7 @@ export const AppLayout = () => {
         <AppSidebar />
         <SidebarInset>
           <HeaderProvider>
-              <main className="w-full md:min-h-full-minus-60">
+              <main className="w-full md:min-h-full bg-gray-50 dark:bg-neutral-700">
                 <Header />
                 <Outlet />
               </main>

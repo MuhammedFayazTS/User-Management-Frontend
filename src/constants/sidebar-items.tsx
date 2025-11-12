@@ -19,6 +19,30 @@ export const data = {
           title: "Group",
           url: "/admin/group",
         },
+        {
+          title: "Branch",
+          url: "/admin/branch",
+        },
+        {
+          title: "Room Status",
+          url: "/admin/room-status",
+        },
+        {
+          title: "Room Types",
+          url: "/admin/room-type",
+        },
+        {
+          title: "Room",
+          url: "/admin/room",
+        },
+        {
+          title: "Customer",
+          url: "/admin/customer",
+        },
+        {
+          title: "Booking",
+          url: "/booking/create",
+        },
       ],
     },
     {

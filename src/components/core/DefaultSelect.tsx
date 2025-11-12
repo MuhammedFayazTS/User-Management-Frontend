@@ -34,6 +34,7 @@ interface IDefaultSelectProps<TFormValues extends FieldValues> {
     minWidth?: string;
     maxWidth?: string;
     message?: string;
+    inputClassName?: string;
     options?: SelectOption[];
     isLoading?: boolean;
     disabled?: boolean;
@@ -44,6 +45,7 @@ export const DefaultSelect = <TFormValues extends FieldValues>({
     name,
     control,
     label,
+    inputClassName,
     placeholder = "Select an option",
     width = "100%",
     minWidth,
@@ -97,10 +99,10 @@ export const DefaultSelect = <TFormValues extends FieldValues>({
 
                 return (
                     <FormItem
-                        className="flex flex-col"
+                        className="flex flex-col pt-1"
                         style={{ width, minWidth, maxWidth }}
                     >
-                        {label && <FormLabel>{label}</FormLabel>}
+                        {label && <FormLabel className="mb-1">{label}</FormLabel>}
                         {isLoading ? (
                             <Skeleton
                                 className={`h-10 ${width ? `w-${width}` : "w-full"
@@ -117,7 +119,7 @@ export const DefaultSelect = <TFormValues extends FieldValues>({
                                     }}
                                 >
                                     <FormControl>
-                                        <SelectTrigger disabled={disabled}>
+                                        <SelectTrigger className={inputClassName} disabled={disabled}>
                                             <SelectValue
                                                 placeholder={placeholder}
                                             />

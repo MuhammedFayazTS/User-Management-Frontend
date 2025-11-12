@@ -6,6 +6,7 @@ interface IDefaultTextAreaProps<TFormValues extends FieldValues> {
     name: Path<TFormValues>;
     control: UseFormReturn<TFormValues>["control"];
     label?: string;
+    inputClassName?: string;
     placeholder?: string;
     autoComplete?: 'off' | 'on',
     width?: number
@@ -16,6 +17,7 @@ const DefaultTextArea = <TFormValues extends FieldValues>({
     control,
     name,
     label,
+    inputClassName,
     placeholder,
     autoComplete,
     width,
@@ -30,6 +32,7 @@ const DefaultTextArea = <TFormValues extends FieldValues>({
                     <FormLabel className="dark:text-[#f1f7feb5] text-sm">{label}</FormLabel>
                     <FormControl>
                         <Textarea
+                            className={inputClassName}
                             placeholder={placeholder}
                             autoComplete={autoComplete}
                             readOnly={readOnly}
